@@ -1,13 +1,19 @@
 import React from 'react';
 import Editor from '@monaco-editor/react';
 
-export const CodeEditor = () => {
+interface CodeEditorProps {
+  value: string;
+  onChange: (value: string | undefined) => void;
+}
+
+export const CodeEditor = ({ value, onChange }: CodeEditorProps) => {
   return (
     <div className="h-full w-1/2 min-w-[300px] flex flex-col bg-[#1e1e1e]">
        <Editor
         height="100%"
         defaultLanguage="markdown"
-        defaultValue="# Hello Marp"
+        value={value}
+        onChange={onChange}
         theme="vs-dark"
         options={{
           minimap: { enabled: false },

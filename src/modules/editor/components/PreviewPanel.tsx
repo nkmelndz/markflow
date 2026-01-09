@@ -1,15 +1,20 @@
 import React from 'react';
+import { useMarpRender } from '@/modules/editor/hooks/useMarpRender';
 
-export const PreviewPanel = () => {
+interface PreviewPanelProps {
+  content: string;
+}
+
+export const PreviewPanel = ({ content }: PreviewPanelProps) => {
+  const { html, css } = useMarpRender(content);
+
   return (
-    <div className="h-full flex-1 min-w-[300px] bg-[#121212] flex items-center justify-center p-8 overflow-y-auto">
-        {/* Placeholder for Marp Slide */}
-        <div className="aspect-video w-full max-w-4xl bg-white rounded-xl shadow-2xl flex items-center justify-center text-black">
-            <div className="text-center">
-                <h1 className="text-4xl font-bold mb-4">Marp Preview</h1>
-                <p className="text-gray-500">Rendered slides will appear here</p>
-            </div>
-        </div>
+    <div className="h-full flex-1 min-w-[300px] bg-[#121212] flex flex-col items-center p-8 overflow-y-auto relative">
+        <style>{css}</style>
+        <div 
+          className="marp-content w-full max-w-4xl shadow-2xl"
+          dangerouslySetInnerHTML={{ __html: html }} 
+        />
     </div>
   );
 };
