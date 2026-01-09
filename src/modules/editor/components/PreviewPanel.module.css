@@ -1,0 +1,26 @@
+/* Container style: Standard block layout (no flex) prevents height collapse of SVGs */
+.previewContainer {
+  width: 100%;
+  max-width: 56rem; /* max-w-4xl */
+  display: block; 
+}
+
+/* Target descendent slides (section/svg) specifically to jump over any wrapper divs */
+.previewContainer :global(section),
+.previewContainer :global(svg) {
+  display: block;        
+  margin-bottom: 2rem;   
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  overflow: hidden;
+  margin-inline: auto;   
+}
+
+/* Remove styled container wrapper background/shadow if it picked it up accidentally 
+   (though simpler selectors usually avoid this, keeping it clean is safer) */
+.previewContainer > div {
+  background: transparent !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
