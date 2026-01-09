@@ -16,6 +16,10 @@ export const CodeEditor = () => {
           padding: { top: 20 },
           scrollBeyondLastLine: false,
           fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+          quickSuggestions: false,
+          suggestOnTriggerCharacters: false,
+          snippetSuggestions: 'none',
+          wordBasedSuggestions: 'off',
         }}
        />
     </div>
