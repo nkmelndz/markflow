@@ -6,8 +6,8 @@
 }
 
 /* Target descendent slides (section/svg) specifically to jump over any wrapper divs */
-.previewContainer :global(section),
-.previewContainer :global(svg) {
+.previewContainer :global(.marpit) > :global(section),
+.previewContainer :global(.marpit) > :global(svg) {
   display: block;        
   margin-bottom: 2rem;   
   border-radius: 12px;
@@ -34,4 +34,17 @@
 .previewContainer :global(ul) {
   list-style-type: disc;
   margin-left: 1.5rem;
+}
+
+/* Force inline display for emojis to prevent interruptions */
+.previewContainer :global(.emoji),
+.previewContainer :global([data-marp-twemoji]) {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  margin: 0 0.2em !important;
+  width: 1em !important;
+  height: 1em !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
 }
