@@ -4,7 +4,7 @@ import { Marp } from '@marp-team/marp-core';
 export const useMarpRender = (content: string) => {
   return useMemo(() => {
     try {
-      const marp = new Marp();
+      const marp = new Marp({ html: true });
       const { html, css } = marp.render(content);
       return { html, css };
     } catch (error) {
