@@ -50,7 +50,7 @@
 }
 
 /* Highlight hover effect for sync */
-.previewContainer :global([data-line]:not(section)):hover {
+.previewContainer :global([data-line]:not(section)):hover:not(:has(:global([data-line]):hover)) {
   outline: 2px solid rgba(60, 100, 255, 0.5); /* Blue-ish highlight */
   background-color: rgba(60, 100, 255, 0.1);
   cursor: pointer;
