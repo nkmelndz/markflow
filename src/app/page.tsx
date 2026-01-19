@@ -20,12 +20,12 @@ export default function Home() {
           value={content} 
           onChange={(val) => setContent(val || '')} 
           onMount={handleEditorDidMount}
-          width={width}
         />
         <Resizer onMouseDown={startResizing} />
         <PreviewPanel 
           content={content} 
           onLineClick={goToLine}
+          width={width}
         />
       </main>
     </div>

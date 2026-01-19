@@ -9,7 +9,7 @@ interface UseResizableProps {
 export const useResizable = ({ 
   initialWidth = 500, 
   minWidth = 300,
-  maxWidth = 1200 
+  maxWidth = 1200,
 }: UseResizableProps = {}) => {
   const [width, setWidth] = useState(initialWidth);
   const [isResizing, setIsResizing] = useState(false);
@@ -25,10 +25,10 @@ export const useResizable = ({
 
   const resize = useCallback((e: MouseEvent) => {
     if (isResizing) {
-      // Calculate new width relative to the window left edge (assuming sidebar is on left)
-      // If we need more complex positioning, we might need a ref to the container
-      const newWidth = Math.min(Math.max(e.clientX, minWidth), maxWidth);
-      setWidth(newWidth);
+      // For right panel: width = window.innerWidth - mouseX
+      const newWidth = window.innerWidth - e.clientX;
+      const clampedWidth = Math.min(Math.max(newWidth, minWidth), maxWidth);
+      setWidth(clampedWidth);
     }
   }, [isResizing, minWidth, maxWidth]);
 
