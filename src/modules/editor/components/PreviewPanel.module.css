@@ -1,7 +1,7 @@
-/* Container style: Standard block layout (no flex) prevents height collapse of SVGs */
 .previewContainer {
   width: 100%;
-  max-width: 56rem; /* max-w-4xl */
+  padding: 2rem;
+  box-sizing: border-box;
   display: block; 
 }
 
@@ -10,6 +10,8 @@
 .previewContainer :global(.marpit) > :global(svg) {
   display: block;        
   margin-bottom: 2rem;   
+  width: 100%;
+  height: auto;
   border-radius: 12px;
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   overflow: hidden;

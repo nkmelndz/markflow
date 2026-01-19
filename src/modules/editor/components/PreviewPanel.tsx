@@ -31,7 +31,7 @@ export const PreviewPanel = ({ content, onLineClick }: PreviewPanelProps) => {
 
   return (
     <div 
-      className="h-full flex-1 min-w-[300px] bg-[#121212] flex flex-col items-center p-8 overflow-y-auto relative"
+      className="h-full flex-1 min-w-[300px] bg-[#121212] flex flex-col items-center overflow-y-auto relative"
       onClick={handlePreviewClick}
     >
         <style>{css}</style>
