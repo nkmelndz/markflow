@@ -57,3 +57,13 @@
   border-radius: 4px;
   transition: all 0.1s ease;
 }
+
+/* Darker links for better readability */
+.previewContainer :global(a) {
+  color: #0366d6 !important;
+  text-decoration: none !important;
+}
+
+.previewContainer :global(a):hover {
+  text-decoration: underline !important;
+}
