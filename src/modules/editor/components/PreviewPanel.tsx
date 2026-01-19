@@ -18,6 +18,10 @@ export const PreviewPanel = ({ content, onLineClick }: PreviewPanelProps) => {
     const lineElement = target.closest('[data-line]');
     
     if (lineElement) {
+      // Ignore clicks on the slide container itself (SECTION)
+      // We only want to jump when clicking specific content
+      if (lineElement.tagName === 'SECTION') return;
+
       const line = parseInt(lineElement.getAttribute('data-line') || '0', 10);
       if (line > 0) {
         onLineClick(line);
