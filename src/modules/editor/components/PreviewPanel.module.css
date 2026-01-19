@@ -1,0 +1,71 @@
+.previewContainer {
+  width: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+  display: block; 
+}
+
+/* Target descendent slides (section/svg) specifically to jump over any wrapper divs */
+.previewContainer :global(.marpit) > :global(section),
+.previewContainer :global(.marpit) > :global(svg) {
+  display: block;        
+  margin-bottom: 2rem;   
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  overflow: hidden;
+  margin-inline: auto;   
+}
+
+/* Remove styled container wrapper background/shadow if it picked it up accidentally 
+   (though simpler selectors usually avoid this, keeping it clean is safer) */
+.previewContainer > div {
+  background: transparent !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Restore list styles reset by Tailwind Preflight */
+.previewContainer :global(ol) {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+}
+
+.previewContainer :global(ul) {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+}
+
+/* Force inline display for emojis to prevent interruptions */
+.previewContainer :global(.emoji),
+.previewContainer :global([data-marp-twemoji]) {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  margin: 0 0.2em !important;
+  width: 1em !important;
+  height: 1em !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* Highlight hover effect for sync */
+.previewContainer :global([data-line]:not(section)):hover:not(:has(:global([data-line]):hover)) {
+  outline: 2px solid rgba(60, 100, 255, 0.5); /* Blue-ish highlight */
+  background-color: rgba(60, 100, 255, 0.1);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.1s ease;
+}
+
+/* Darker links for better readability */
+.previewContainer :global(a) {
+  color: #0366d6 !important;
+  text-decoration: none !important;
+}
+
+.previewContainer :global(a):hover {
+  text-decoration: underline !important;
+}
