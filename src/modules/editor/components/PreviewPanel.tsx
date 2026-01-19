@@ -9,7 +9,7 @@ interface PreviewPanelProps {
 }
 
 export const PreviewPanel = ({ content, onLineClick, width }: PreviewPanelProps & { width?: number }) => {
-  const { html, css, handlePreviewClick } = usePreview(content);
+  const { html, css, handlePreviewClick } = usePreview(content, onLineClick);
 
   return (
     <div 
