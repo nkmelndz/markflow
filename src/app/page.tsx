@@ -6,16 +6,23 @@ import { Resizer } from '@/modules/editor/components/Resizer';
 import { useEditor } from '@/modules/editor/hooks/useEditor';
 
 export default function Home() {
-  const { content, setContent } = useEditor();
+  const { content, setContent, handleEditorDidMount, goToLine } = useEditor();
 
   return (
     <div className="flex flex-col h-screen w-full bg-[#1e1e1e] text-white overflow-hidden">
       <EditorHeader />
       
       <main className="flex-1 flex flex-row overflow-hidden relative">
-        <CodeEditor value={content} onChange={(val) => setContent(val || '')} />
+        <CodeEditor 
+          value={content} 
+          onChange={(val) => setContent(val || '')} 
+          onMount={handleEditorDidMount}
+        />
         <Resizer />
-        <PreviewPanel content={content} />
+        <PreviewPanel 
+          content={content} 
+          onLineClick={goToLine}
+        />
       </main>
     </div>
   );}
