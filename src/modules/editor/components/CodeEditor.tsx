@@ -7,9 +7,12 @@ interface CodeEditorProps {
   onMount?: (editor: any, monaco: any) => void;
 }
 
-export const CodeEditor = ({ value, onChange, onMount }: CodeEditorProps) => {
+export const CodeEditor = ({ value, onChange, onMount, width }: CodeEditorProps & { width?: number }) => {
   return (
-    <div className="h-full w-1/2 min-w-[300px] flex flex-col bg-[#1e1e1e]">
+    <div 
+      className="h-full flex flex-col bg-[#1e1e1e]"
+      style={{ width: width, minWidth: 300 }}
+    >
        <Editor
         height="100%"
         defaultLanguage="markdown"

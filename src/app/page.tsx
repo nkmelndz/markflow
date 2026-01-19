@@ -5,8 +5,11 @@ import { PreviewPanel } from '@/modules/editor/components/PreviewPanel';
 import { Resizer } from '@/modules/editor/components/Resizer';
 import { useEditor } from '@/modules/editor/hooks/useEditor';
 
+import { useResizable } from '@/modules/editor/hooks/useResizable';
+
 export default function Home() {
   const { content, setContent, handleEditorDidMount, goToLine } = useEditor();
+  const { width, startResizing } = useResizable({ initialWidth: 600 });
 
   return (
     <div className="flex flex-col h-screen w-full bg-[#1e1e1e] text-white overflow-hidden">
@@ -17,8 +20,9 @@ export default function Home() {
           value={content} 
           onChange={(val) => setContent(val || '')} 
           onMount={handleEditorDidMount}
+          width={width}
         />
-        <Resizer />
+        <Resizer onMouseDown={startResizing} />
         <PreviewPanel 
           content={content} 
           onLineClick={goToLine}
