@@ -25,10 +25,20 @@ export const useResizable = ({
 
   const resize = useCallback((e: MouseEvent) => {
     if (isResizing) {
-      // For right panel: width = window.innerWidth - mouseX
-      const newWidth = window.innerWidth - e.clientX;
-      const clampedWidth = Math.min(Math.max(newWidth, minWidth), maxWidth);
-      setWidth(clampedWidth);
+      // Calculate new width relative to the window right edge
+      const newWidthPx = window.innerWidth - e.clientX;
+      
+      // Convert to percentage of current window width
+      const vwValue = (newWidthPx / window.innerWidth) * 100;
+      
+      // Clamp between min/max (converting min/max logic to appx percentage check or just keep pixels? 
+      // Strictly speaking, minWidth/maxWidth props are numbers (pixels). 
+      // We should check the pixel value against constraints, THEN convert to VW.)
+      
+      const clampedPx = Math.min(Math.max(newWidthPx, minWidth), maxWidth);
+      const finalVw = (clampedPx / window.innerWidth) * 100;
+      
+      setWidth(`${finalVw}vw`);
     }
   }, [isResizing, minWidth, maxWidth]);
 
