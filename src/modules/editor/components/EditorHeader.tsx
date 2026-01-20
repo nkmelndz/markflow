@@ -1,5 +1,5 @@
 import React from 'react';
-import { Save, Share, Menu } from 'lucide-react';
+import { Download, Share, Menu } from 'lucide-react';
 
 export const EditorHeader = () => {
   return (
@@ -16,13 +16,13 @@ export const EditorHeader = () => {
 
       <div className="flex items-center gap-3">
         <button className="flex items-center gap-2 px-4 py-2 hover:bg-white/5 text-gray-300 rounded-lg text-sm transition-colors">
-          <Save size={18} />
-          Save
+          <Download size={18} />
+          Export
         </button>
         
         <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-blue-900/20">
           <Share size={18} />
-          Export
+          Share
         </button>
       </div>
     </header>
