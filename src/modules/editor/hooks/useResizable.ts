@@ -1,17 +1,17 @@
 import { useState, useCallback, useEffect } from 'react';
 
 interface UseResizableProps {
-  initialWidth?: number;
+  initialWidthVw?: number; // VW percentage (0-100)
   minWidth?: number;
   maxWidth?: number;
 }
 
 export const useResizable = ({ 
-  initialWidth = 500, 
+  initialWidthVw = 50,
   minWidth = 300,
   maxWidth = 1200,
 }: UseResizableProps = {}) => {
-  const [width, setWidth] = useState(initialWidth);
+  const [width, setWidth] = useState<number | string>(`${initialWidthVw}vw`);
   const [isResizing, setIsResizing] = useState(false);
 
   const startResizing = useCallback((e: React.MouseEvent) => {
