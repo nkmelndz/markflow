@@ -9,7 +9,9 @@ interface CodeEditorProps {
 
 export const CodeEditor = ({ value, onChange, onMount }: CodeEditorProps) => {
   return (
-    <div className="h-full w-1/2 min-w-[300px] flex flex-col bg-[#1e1e1e]">
+    <div 
+      className="h-full flex-1 min-w-0 flex flex-col bg-[#1e1e1e]"
+    >
        <Editor
         height="100%"
         defaultLanguage="markdown"
