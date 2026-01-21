@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
+import MDEditor from '@uiw/react-md-editor';
 import { usePreview } from '@/modules/editor/hooks/usePreview';
 import styles from './PreviewPanel.module.css';
 import { clsx } from 'clsx';
@@ -31,10 +31,26 @@ export const PreviewPanel = ({ content, onLineClick, width, viewMode }: PreviewP
           />
         </div>
       ) : (
-        <div className="flex-1 w-full overflow-y-auto p-8">
-          <div className="prose prose-invert max-w-none prose-headings:font-bold prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-a:text-blue-400">
-            <ReactMarkdown>{content}</ReactMarkdown>
-          </div>
+        <div className="flex-1 w-full overflow-y-auto p-8 bg-[#1e1e1e]" data-color-mode="dark">
+            <style jsx global>{`
+              .wmde-markdown {
+                background-color: transparent !important;
+              }
+              .wmde-markdown pre, 
+              .wmde-markdown code {
+                background-color: #2d2d2d !important;
+              }
+              .wmde-markdown table tr,
+              .wmde-markdown table th,
+              .wmde-markdown table td {
+                background-color: transparent !important;
+                border-color: #444 !important;
+              }
+              .wmde-markdown img {
+                background-color: transparent !important;
+              }
+            `}</style>
+            <MDEditor.Markdown source={content} style={{ backgroundColor: 'transparent', color: 'white' }} />
         </div>
       )}
     </div>
