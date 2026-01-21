@@ -1,6 +1,6 @@
 "use client"
 
-import { EditorHeader } from '@/modules/editor/components/EditorHeader';
+import { EditorHeader } from '@/modules/editor/components/Header';
 import { CodeEditor } from '@/modules/editor/components/CodeEditor';
 import { PreviewPanel } from '@/modules/editor/components/PreviewPanel';
 import { Resizer } from '@/modules/editor/components/Resizer';
