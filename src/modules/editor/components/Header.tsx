@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, Share, PenLine, Columns, Eye } from 'lucide-react';
+import { Download, Share, PenLine, Columns, Eye, FileText, Presentation } from 'lucide-react';
 
 interface EditorHeaderProps {
   viewMode: 'marp' | 'markdown';
@@ -10,44 +10,73 @@ interface EditorHeaderProps {
 
 export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode }: EditorHeaderProps) => {
   return (
-    <header className="h-16 border-b border-white/10 bg-[#1e1e1e] flex items-center justify-between px-6 shrink-0 relative">
-      <div className="flex items-center gap-4">
-        <h1 className="text-xl font-bold text-white tracking-tight">markflow</h1>
+    <header className="h-14 border-b border-white/10 bg-[#1e1e1e] flex items-center justify-between px-6 shrink-0 relative">
+      <div className="flex items-center gap-6">
+        <h1 className="text-2xl font-bold text-white tracking-tight">markflow</h1>
         
-        <div className="bg-[#121212] p-1 rounded-lg flex items-center gap-1 ml-2">
-          <button
-            onClick={() => setLayoutMode('editor')}
-            className={`p-1.5 rounded-md transition-all ${
-              layoutMode === 'editor'
-                ? 'bg-[#2d2d2d] text-white shadow-sm'
-                : 'text-gray-400 hover:text-gray-200'
-            }`}
-            title="Editor only"
-          >
-            <PenLine size={16} />
-          </button>
-          <button
-            onClick={() => setLayoutMode('split')}
-            className={`p-1.5 rounded-md transition-all ${
-              layoutMode === 'split'
-                ? 'bg-[#2d2d2d] text-white shadow-sm'
-                : 'text-gray-400 hover:text-gray-200'
-            }`}
-            title="Split view"
-          >
-            <Columns size={16} />
-          </button>
-          <button
-            onClick={() => setLayoutMode('preview')}
-            className={`p-1.5 rounded-md transition-all ${
-              layoutMode === 'preview'
-                ? 'bg-[#2d2d2d] text-white shadow-sm'
-                : 'text-gray-400 hover:text-gray-200'
-            }`}
-            title="Preview only"
-          >
-            <Eye size={16} />
-          </button>
+        <div className="flex items-center gap-3">
+            {/* Layout Toggles */}
+            <div className="bg-[#121212] p-1 rounded-lg flex items-center gap-1">
+            <button
+                onClick={() => setLayoutMode('editor')}
+                className={`p-1.5 rounded-md transition-all ${
+                layoutMode === 'editor'
+                    ? 'bg-[#2d2d2d] text-white shadow-sm'
+                    : 'text-gray-400 hover:text-gray-200'
+                }`}
+                title="Editor only"
+            >
+                <PenLine size={16} />
+            </button>
+            <button
+                onClick={() => setLayoutMode('split')}
+                className={`p-1.5 rounded-md transition-all ${
+                layoutMode === 'split'
+                    ? 'bg-[#2d2d2d] text-white shadow-sm'
+                    : 'text-gray-400 hover:text-gray-200'
+                }`}
+                title="Split view"
+            >
+                <Columns size={16} />
+            </button>
+            <button
+                onClick={() => setLayoutMode('preview')}
+                className={`p-1.5 rounded-md transition-all ${
+                layoutMode === 'preview'
+                    ? 'bg-[#2d2d2d] text-white shadow-sm'
+                    : 'text-gray-400 hover:text-gray-200'
+                }`}
+                title="Preview only"
+            >
+                <Eye size={16} />
+            </button>
+            </div>
+
+            {/* View Mode Toggles */}
+            <div className="bg-[#121212] p-1 rounded-lg flex items-center gap-1">
+            <button
+                onClick={() => setViewMode('markdown')}
+                className={`p-1.5 rounded-md transition-all ${
+                viewMode === 'markdown'
+                    ? 'bg-[#2d2d2d] text-white shadow-sm'
+                    : 'text-gray-400 hover:text-gray-200'
+                }`}
+                title="Markdown Document"
+            >
+                <FileText size={16} />
+            </button>
+            <button
+                onClick={() => setViewMode('marp')}
+                className={`p-1.5 rounded-md transition-all ${
+                viewMode === 'marp'
+                    ? 'bg-[#2d2d2d] text-white shadow-sm'
+                    : 'text-gray-400 hover:text-gray-200'
+                }`}
+                title="Marp Presentation"
+            >
+                <Presentation size={16} />
+            </button>
+            </div>
         </div>
       </div>
 
@@ -57,29 +86,6 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode 
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="bg-[#121212] p-1 rounded-lg flex items-center gap-1 mr-2">
-          <button
-            onClick={() => setViewMode('markdown')}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-              viewMode === 'markdown'
-                ? 'bg-[#2d2d2d] text-white shadow-sm'
-                : 'text-gray-400 hover:text-gray-200'
-            }`}
-          >
-            Doc
-          </button>
-          <button
-            onClick={() => setViewMode('marp')}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-              viewMode === 'marp'
-                ? 'bg-[#2d2d2d] text-white shadow-sm'
-                : 'text-gray-400 hover:text-gray-200'
-            }`}
-          >
-            Slides
-          </button>
-        </div>
-
         <button className="flex items-center gap-2 px-4 py-2 hover:bg-white/5 text-gray-300 rounded-lg text-sm transition-colors">
           <Download size={18} />
           Export
