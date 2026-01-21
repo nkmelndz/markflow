@@ -81,8 +81,7 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode 
       </div>
 
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-        <span className="text-sm font-medium text-gray-200">presentation.md</span>
-        <span className="text-xs text-gray-500">Unsaved changes</span>
+        <span className="text-[16px] font-bold text-gray-200">presentation</span>
       </div>
 
       <div className="flex items-center gap-3">
