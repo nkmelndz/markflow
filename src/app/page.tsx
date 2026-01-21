@@ -1,4 +1,5 @@
 "use client"
+import { useState } from 'react';
 import { EditorHeader } from '@/modules/editor/components/EditorHeader';
 import { CodeEditor } from '@/modules/editor/components/CodeEditor';
 import { PreviewPanel } from '@/modules/editor/components/PreviewPanel';
@@ -10,10 +11,11 @@ import { useResizable } from '@/modules/editor/hooks/useResizable';
 export default function Home() {
   const { content, setContent, handleEditorDidMount, goToLine } = useEditor();
   const { width, startResizing } = useResizable({ initialWidthVw: 50 });
+  const [viewMode, setViewMode] = useState<'marp' | 'markdown'>('marp');
 
   return (
     <div className="flex flex-col h-screen w-full bg-[#1e1e1e] text-white overflow-hidden">
-      <EditorHeader />
+      <EditorHeader viewMode={viewMode} setViewMode={setViewMode} />
       
       <main className="flex-1 flex flex-row overflow-hidden relative">
         <CodeEditor 
@@ -26,7 +28,9 @@ export default function Home() {
           content={content} 
           onLineClick={goToLine}
           width={width}
+          viewMode={viewMode}
         />
       </main>
     </div>
-  );}
+  );
+}

@@ -1,7 +1,12 @@
 import React from 'react';
 import { Download, Share, Menu } from 'lucide-react';
 
-export const EditorHeader = () => {
+interface EditorHeaderProps {
+  viewMode: 'marp' | 'markdown';
+  setViewMode: (mode: 'marp' | 'markdown') => void;
+}
+
+export const EditorHeader = ({ viewMode, setViewMode }: EditorHeaderProps) => {
   return (
     <header className="h-16 border-b border-white/10 bg-[#1e1e1e] flex items-center justify-between px-6 shrink-0">
       <div className="flex items-center gap-4">
@@ -12,6 +17,29 @@ export const EditorHeader = () => {
           <span className="text-sm font-medium text-gray-200">presentation.md</span>
           <span className="text-xs text-gray-500">Unsaved changes</span>
         </div>
+      </div>
+
+      <div className="bg-[#121212] p-1 rounded-lg flex items-center gap-1">
+        <button
+          onClick={() => setViewMode('marp')}
+          className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+            viewMode === 'marp'
+              ? 'bg-[#2d2d2d] text-white shadow-sm'
+              : 'text-gray-400 hover:text-gray-200'
+          }`}
+        >
+          Slides
+        </button>
+        <button
+          onClick={() => setViewMode('markdown')}
+          className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+            viewMode === 'markdown'
+              ? 'bg-[#2d2d2d] text-white shadow-sm'
+              : 'text-gray-400 hover:text-gray-200'
+          }`}
+        >
+          Doc
+        </button>
       </div>
 
       <div className="flex items-center gap-3">
