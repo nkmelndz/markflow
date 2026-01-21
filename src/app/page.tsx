@@ -40,6 +40,7 @@ export default function Home() {
         setViewMode={setViewMode} 
         layoutMode={layoutMode}
         setLayoutMode={setLayoutMode}
+        content={content} 
       />
       
       <main className="flex-1 flex flex-row overflow-hidden relative">

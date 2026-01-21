@@ -1,16 +1,19 @@
 import React from 'react';
 import { Download, Share2, PenLine, Columns, Eye, FileText, Presentation, FileCode, Printer } from 'lucide-react';
+import { useExport } from '../hooks/useExport';
 
 interface EditorHeaderProps {
   viewMode: 'marp' | 'markdown';
   setViewMode: (mode: 'marp' | 'markdown') => void;
   layoutMode: 'editor' | 'split' | 'preview';
   setLayoutMode: (mode: 'editor' | 'split' | 'preview') => void;
+  content: string;
 }
 
-export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode }: EditorHeaderProps) => {
+export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode, content }: EditorHeaderProps) => {
   const [isExportOpen, setIsExportOpen] = React.useState(false);
   const exportMenuRef = React.useRef<HTMLDivElement>(null);
+  const { exportMarkdown, exportHTML, triggerPrint } = useExport();
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -24,6 +27,18 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode 
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const handleExport = (type: 'md' | 'html' | 'pdf') => {
+    if (type === 'md') {
+      exportMarkdown(content, 'presentation.md');
+    } else if (type === 'html') {
+      const filename = viewMode === 'marp' ? 'presentation.html' : 'document.html';
+      exportHTML(content, viewMode, filename);
+    } else if (type === 'pdf') {
+      triggerPrint();
+    }
+    setIsExportOpen(false);
+  };
 
   return (
     <header className="h-14 border-b border-white/10 bg-[#1e1e1e] flex items-center justify-between px-6 shrink-0 relative">
@@ -113,15 +128,24 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode 
           {isExportOpen && (
             <div className="absolute top-full right-0 mt-2 w-48 bg-[#1e1e1e] border border-white/10 rounded-lg shadow-xl overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-100">
               <div className="p-1">
-                <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white rounded-md text-left transition-colors">
+                <button 
+                  onClick={() => handleExport('md')}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white rounded-md text-left transition-colors"
+                >
                   <FileText size={16} />
                   <span>Markdown (.md)</span>
                 </button>
-                <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white rounded-md text-left transition-colors">
+                <button 
+                  onClick={() => handleExport('html')}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white rounded-md text-left transition-colors"
+                >
                   <FileCode size={16} />
                   <span>HTML (.html)</span>
                 </button>
-                <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white rounded-md text-left transition-colors">
+                <button 
+                  onClick={() => handleExport('pdf')}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white rounded-md text-left transition-colors"
+                >
                   <Printer size={16} />
                   <span>PDF / Print</span>
                 </button>
