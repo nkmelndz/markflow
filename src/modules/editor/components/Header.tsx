@@ -132,8 +132,9 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
                 onKeyDown={(e) => {
                     if (e.key === 'Enter') setIsEditingName(false);
                 }}
+                maxLength={40}
                 className="bg-transparent text-[16px] font-bold text-gray-200 text-center border-b border-blue-500 focus:outline-none px-1"
-                style={{ width: `${Math.max(fileName.length, 10)}ch` }}
+                style={{ width: `${Math.min(Math.max(fileName.length, 10), 40)}ch` }}
             />
         ) : (
             <span 
