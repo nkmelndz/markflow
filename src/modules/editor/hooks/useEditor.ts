@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 const DEFAULT_CONTENT = `---
 marp: true
@@ -20,6 +20,19 @@ This is a slide.
 export const useEditor = () => {
   const [content, setContent] = useState<string>(DEFAULT_CONTENT);
   const editorRef = useRef<any>(null);
+
+  // Load from LocalStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('markflow_content_v1');
+    if (saved) {
+      setContent(saved);
+    }
+  }, []);
+
+  // Save to LocalStorage on change
+  useEffect(() => {
+    localStorage.setItem('markflow_content_v1', content);
+  }, [content]);
 
   const handleEditorDidMount = (editor: any) => {
     editorRef.current = editor;
