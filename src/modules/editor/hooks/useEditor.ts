@@ -16,6 +16,7 @@ Start writing your content here.
 
 export const useEditor = () => {
   const [content, setContent] = useState<string>('');
+  const [fileName, setFileName] = useState<string>('presentation');
   const [viewMode, setViewMode] = useState<'marp' | 'markdown'>('markdown');
   const [layoutMode, setLayoutMode] = useState<'editor' | 'split' | 'preview'>('split');
   const [isInitialized, setIsInitialized] = useState(false);
@@ -26,11 +27,16 @@ export const useEditor = () => {
     const savedContent = localStorage.getItem('markflow_content_v1');
     const savedViewMode = localStorage.getItem('markflow_viewmode_v1');
     const savedLayoutMode = localStorage.getItem('markflow_layoutmode_v1');
+    const savedFileName = localStorage.getItem('markflow_filename_v1');
     
     if (savedContent) {
       setContent(savedContent);
     } else {
         setContent(DEFAULT_CONTENT);
+    }
+
+    if (savedFileName) {
+        setFileName(savedFileName);
     }
 
     if (savedViewMode === 'marp' || savedViewMode === 'markdown') {
@@ -50,8 +56,9 @@ export const useEditor = () => {
         localStorage.setItem('markflow_content_v1', content);
         localStorage.setItem('markflow_viewmode_v1', viewMode);
         localStorage.setItem('markflow_layoutmode_v1', layoutMode);
+        localStorage.setItem('markflow_filename_v1', fileName);
     }
-  }, [content, viewMode, layoutMode, isInitialized]);
+  }, [content, viewMode, layoutMode, fileName, isInitialized]);
 
   const handleEditorDidMount = (editor: any) => {
     editorRef.current = editor;
@@ -79,6 +86,8 @@ export const useEditor = () => {
     setLayoutMode,
     handleEditorDidMount,
     goToLine,
-    isInitialized
+    isInitialized,
+    fileName,
+    setFileName
   };
 };

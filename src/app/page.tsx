@@ -18,7 +18,9 @@ export default function Home() {
     setLayoutMode,
     handleEditorDidMount, 
     goToLine, 
-    isInitialized 
+    isInitialized,
+    fileName,
+    setFileName
   } = useEditor();
   const { width, startResizing } = useResizable({ initialWidthVw: 50 });
 
@@ -40,7 +42,9 @@ export default function Home() {
         setViewMode={setViewMode} 
         layoutMode={layoutMode}
         setLayoutMode={setLayoutMode}
-        content={content} 
+        content={content}
+        fileName={fileName}
+        setFileName={setFileName}
       />
       
       <main className="flex-1 flex flex-row overflow-hidden relative">

@@ -8,12 +8,22 @@ interface EditorHeaderProps {
   layoutMode: 'editor' | 'split' | 'preview';
   setLayoutMode: (mode: 'editor' | 'split' | 'preview') => void;
   content: string;
+  fileName: string;
+  setFileName: (name: string) => void;
 }
 
-export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode, content }: EditorHeaderProps) => {
+export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode, content, fileName, setFileName }: EditorHeaderProps) => {
   const [isExportOpen, setIsExportOpen] = React.useState(false);
+  const [isEditingName, setIsEditingName] = React.useState(false);
   const exportMenuRef = React.useRef<HTMLDivElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const { exportMarkdown, exportHTML, triggerPrint } = useExport();
+
+  React.useEffect(() => {
+    if (isEditingName && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEditingName]);
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -29,11 +39,11 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
   }, []);
 
   const handleExport = (type: 'md' | 'html' | 'pdf') => {
+    const safeFileName = fileName.trim() || 'presentation';
     if (type === 'md') {
-      exportMarkdown(content, 'presentation.md');
+      exportMarkdown(content, `${safeFileName}.md`);
     } else if (type === 'html') {
-      const filename = viewMode === 'marp' ? 'presentation.html' : 'document.html';
-      exportHTML(content, viewMode, filename);
+      exportHTML(content, viewMode, `${safeFileName}.html`);
     } else if (type === 'pdf') {
       triggerPrint();
     }
@@ -112,7 +122,27 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
       </div>
 
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-        <span className="text-[16px] font-bold text-gray-200">presentation</span>
+        {isEditingName ? (
+            <input
+                ref={inputRef}
+                type="text"
+                value={fileName}
+                onChange={(e) => setFileName(e.target.value)}
+                onBlur={() => setIsEditingName(false)}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') setIsEditingName(false);
+                }}
+                className="bg-transparent text-[16px] font-bold text-gray-200 text-center border-b border-blue-500 focus:outline-none px-1"
+                style={{ width: `${Math.max(fileName.length, 10)}ch` }}
+            />
+        ) : (
+            <span 
+                onClick={() => setIsEditingName(true)}
+                className="text-[16px] font-bold text-gray-200 cursor-pointer hover:text-white hover:bg-white/5 py-1 px-2 rounded transition-colors"
+            >
+                {fileName || 'presentation'}
+            </span>
+        )}
       </div>
 
       <div className="flex items-center gap-3">
