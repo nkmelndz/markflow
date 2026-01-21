@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+
 import { EditorHeader } from '@/modules/editor/components/EditorHeader';
 import { CodeEditor } from '@/modules/editor/components/CodeEditor';
 import { PreviewPanel } from '@/modules/editor/components/PreviewPanel';
@@ -9,9 +9,8 @@ import { useEditor } from '@/modules/editor/hooks/useEditor';
 import { useResizable } from '@/modules/editor/hooks/useResizable';
 
 export default function Home() {
-  const { content, setContent, handleEditorDidMount, goToLine, isInitialized } = useEditor();
+  const { content, setContent, viewMode, setViewMode, handleEditorDidMount, goToLine, isInitialized } = useEditor();
   const { width, startResizing } = useResizable({ initialWidthVw: 50 });
-  const [viewMode, setViewMode] = useState<'marp' | 'markdown'>('markdown');
 
   if (!isInitialized) {
     return (

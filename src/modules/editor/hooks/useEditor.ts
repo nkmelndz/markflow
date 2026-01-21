@@ -16,17 +16,25 @@ Start writing your content here.
 
 export const useEditor = () => {
   const [content, setContent] = useState<string>('');
+  const [viewMode, setViewMode] = useState<'marp' | 'markdown'>('markdown');
   const [isInitialized, setIsInitialized] = useState(false);
   const editorRef = useRef<any>(null);
 
   // Load from LocalStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem('markflow_content_v1');
-    if (saved) {
-      setContent(saved);
+    const savedContent = localStorage.getItem('markflow_content_v1');
+    const savedViewMode = localStorage.getItem('markflow_viewmode_v1');
+    
+    if (savedContent) {
+      setContent(savedContent);
     } else {
         setContent(DEFAULT_CONTENT);
     }
+
+    if (savedViewMode === 'marp' || savedViewMode === 'markdown') {
+      setViewMode(savedViewMode);
+    }
+
     setIsInitialized(true);
   }, []);
 
@@ -34,8 +42,9 @@ export const useEditor = () => {
   useEffect(() => {
     if (isInitialized) {
         localStorage.setItem('markflow_content_v1', content);
+        localStorage.setItem('markflow_viewmode_v1', viewMode);
     }
-  }, [content, isInitialized]);
+  }, [content, viewMode, isInitialized]);
 
   const handleEditorDidMount = (editor: any) => {
     editorRef.current = editor;
@@ -57,6 +66,8 @@ export const useEditor = () => {
   return {
     content,
     setContent,
+    viewMode,
+    setViewMode,
     handleEditorDidMount,
     goToLine,
     isInitialized
