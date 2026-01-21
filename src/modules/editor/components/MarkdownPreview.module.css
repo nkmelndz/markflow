@@ -1,0 +1,39 @@
+.markdownContainer :global(.wmde-markdown) {
+  background-color: transparent !important;
+  font-family: inherit;
+}
+
+.markdownContainer :global(.wmde-markdown pre), 
+.markdownContainer :global(.wmde-markdown code) {
+  background-color: #2d2d2d !important;
+}
+
+.markdownContainer :global(.wmde-markdown table tr),
+.markdownContainer :global(.wmde-markdown table th),
+.markdownContainer :global(.wmde-markdown table td) {
+  background-color: transparent !important;
+  border-color: #444 !important;
+}
+
+.markdownContainer :global(.wmde-markdown img) {
+  background-color: transparent !important;
+}
+
+/* Highlight hover effect for sync */
+.markdownContainer :global([data-line]):hover:not(:has(:global([data-line]):hover)) {
+  outline: 2px solid rgba(60, 100, 255, 0.5);
+  background-color: rgba(60, 100, 255, 0.1);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.1s ease;
+}
+
+/* Link styles */
+.markdownContainer :global(a) {
+  color: #58a6ff !important;
+  text-decoration: none !important;
+}
+
+.markdownContainer :global(a):hover {
+  text-decoration: underline !important;
+}
