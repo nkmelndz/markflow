@@ -39,7 +39,7 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
   }, []);
 
   const handleExport = (type: 'md' | 'html' | 'pdf') => {
-    const safeFileName = fileName.trim() || 'presentation';
+    const safeFileName = fileName.trim() || 'Untitled';
     if (type === 'md') {
       exportMarkdown(content, `${safeFileName}.md`);
     } else if (type === 'html') {
@@ -141,7 +141,7 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
                 onClick={() => setIsEditingName(true)}
                 className="text-[16px] font-bold text-gray-200 cursor-pointer hover:text-white hover:bg-white/5 py-1 px-2 rounded transition-colors"
             >
-                {fileName || 'presentation'}
+                {fileName || 'Untitled'}
             </span>
         )}
       </div>

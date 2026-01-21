@@ -16,7 +16,7 @@ Start writing your content here.
 
 export const useEditor = () => {
   const [content, setContent] = useState<string>('');
-  const [fileName, setFileName] = useState<string>('presentation');
+  const [fileName, setFileName] = useState<string>('Untitled');
   const [viewMode, setViewMode] = useState<'marp' | 'markdown'>('markdown');
   const [layoutMode, setLayoutMode] = useState<'editor' | 'split' | 'preview'>('split');
   const [isInitialized, setIsInitialized] = useState(false);
