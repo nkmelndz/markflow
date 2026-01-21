@@ -18,7 +18,8 @@ This is a slide.
 `;
 
 export const useEditor = () => {
-  const [content, setContent] = useState<string>(DEFAULT_CONTENT);
+  const [content, setContent] = useState<string>('');
+  const [isInitialized, setIsInitialized] = useState(false);
   const editorRef = useRef<any>(null);
 
   // Load from LocalStorage on mount
@@ -26,13 +27,18 @@ export const useEditor = () => {
     const saved = localStorage.getItem('markflow_content_v1');
     if (saved) {
       setContent(saved);
+    } else {
+        setContent(DEFAULT_CONTENT);
     }
+    setIsInitialized(true);
   }, []);
 
   // Save to LocalStorage on change
   useEffect(() => {
-    localStorage.setItem('markflow_content_v1', content);
-  }, [content]);
+    if (isInitialized) {
+        localStorage.setItem('markflow_content_v1', content);
+    }
+  }, [content, isInitialized]);
 
   const handleEditorDidMount = (editor: any) => {
     editorRef.current = editor;
@@ -56,5 +62,6 @@ export const useEditor = () => {
     setContent,
     handleEditorDidMount,
     goToLine,
+    isInitialized
   };
 };
