@@ -1,20 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 
-const DEFAULT_CONTENT = `---
-marp: true
-theme: default
----
+const DEFAULT_CONTENT = `
+# Welcome to Markflow
 
-# Hello Marp!
-
-This is a slide.
+Start writing your content here.
 
 ---
 
-# Another Slide
+## Features
 
-- Bullet point 1
-- Bullet point 2
+- **Markdown Support**: Write standard markdown.
+- **Marp Slides**: Transform text into presentations.
+- **Real-time Preview**: See changes instantly.
 `;
 
 export const useEditor = () => {
