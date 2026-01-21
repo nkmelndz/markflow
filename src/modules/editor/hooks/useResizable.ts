@@ -2,15 +2,13 @@ import { useState, useCallback, useEffect } from 'react';
 
 interface UseResizableProps {
   initialWidthVw?: number; // VW percentage (0-100)
-  minWidth?: number;
-  maxWidth?: number;
+  minLeftWidth?: number;
   minRightWidth?: number;
 }
 
 export const useResizable = ({ 
   initialWidthVw = 50,
-  minWidth = 300,
-  maxWidth = 4000,
+  minLeftWidth = 300,
   minRightWidth = 300,
 }: UseResizableProps = {}) => {
   const [width, setWidth] = useState<number>(initialWidthVw);
@@ -34,12 +32,12 @@ export const useResizable = ({
       const maxAllowedWidth = window.innerWidth - minRightWidth;
       
       // Clamp between min and max constraints
-      const clampedPx = Math.min(Math.max(newWidthPx, minWidth), maxWidth, maxAllowedWidth);
+      const clampedPx = Math.min(Math.max(newWidthPx, minLeftWidth), maxAllowedWidth);
       const finalVw = (clampedPx / window.innerWidth) * 100;
       
       setWidth(finalVw);
     }
-  }, [isResizing, minWidth, maxWidth, minRightWidth]);
+  }, [isResizing, minLeftWidth, minRightWidth]);
 
   useEffect(() => {
     if (isResizing) {
