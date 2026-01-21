@@ -11,8 +11,23 @@ interface PreviewPanelProps {
   viewMode: 'marp' | 'markdown';
 }
 
+const MarkdownComponents: any = {
+    p: ({ node, ...props }: any) => <p data-line={node?.position?.start?.line} {...props} />,
+    h1: ({ node, ...props }: any) => <h1 data-line={node?.position?.start?.line} {...props} />,
+    h2: ({ node, ...props }: any) => <h2 data-line={node?.position?.start?.line} {...props} />,
+    h3: ({ node, ...props }: any) => <h3 data-line={node?.position?.start?.line} {...props} />,
+    h4: ({ node, ...props }: any) => <h4 data-line={node?.position?.start?.line} {...props} />,
+    h5: ({ node, ...props }: any) => <h5 data-line={node?.position?.start?.line} {...props} />,
+    h6: ({ node, ...props }: any) => <h6 data-line={node?.position?.start?.line} {...props} />,
+    li: ({ node, ...props }: any) => <li data-line={node?.position?.start?.line} {...props} />,
+    blockquote: ({ node, ...props }: any) => <blockquote data-line={node?.position?.start?.line} {...props} />,
+    code: ({ node, ...props }: any) => <code data-line={node?.position?.start?.line} {...props} />,
+    img: ({ node, ...props }: any) => <img data-line={node?.position?.start?.line} {...props} />,
+    tr: ({ node, ...props }: any) => <tr data-line={node?.position?.start?.line} {...props} />,
+};
+
 export const PreviewPanel = ({ content, onLineClick, width, viewMode }: PreviewPanelProps) => {
-  const { html, css, handlePreviewClick } = usePreview(content, onLineClick);
+  const { html, css, handlePreviewClick } = usePreview(content, viewMode, onLineClick);
 
   return (
     <div 
@@ -31,10 +46,15 @@ export const PreviewPanel = ({ content, onLineClick, width, viewMode }: PreviewP
           />
         </div>
       ) : (
-        <div className="flex-1 w-full overflow-y-auto p-8 bg-[#1e1e1e]" data-color-mode="dark">
+        <div 
+            className="flex-1 w-full overflow-y-auto p-8 bg-[#1e1e1e]" 
+            data-color-mode="dark"
+            onClick={handlePreviewClick}
+        >
             <style jsx global>{`
               .wmde-markdown {
                 background-color: transparent !important;
+                font-family: inherit;
               }
               .wmde-markdown pre, 
               .wmde-markdown code {
@@ -50,7 +70,11 @@ export const PreviewPanel = ({ content, onLineClick, width, viewMode }: PreviewP
                 background-color: transparent !important;
               }
             `}</style>
-            <MDEditor.Markdown source={content} style={{ backgroundColor: 'transparent', color: 'white' }} />
+            <MDEditor.Markdown 
+                source={content} 
+                className="!bg-transparent !text-[#c9d1d9]"
+                components={MarkdownComponents}
+            />
         </div>
       )}
     </div>
