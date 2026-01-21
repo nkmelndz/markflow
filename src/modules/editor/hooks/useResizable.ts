@@ -4,12 +4,14 @@ interface UseResizableProps {
   initialWidthVw?: number; // VW percentage (0-100)
   minWidth?: number;
   maxWidth?: number;
+  minRightWidth?: number;
 }
 
 export const useResizable = ({ 
   initialWidthVw = 50,
   minWidth = 300,
-  maxWidth = 1200,
+  maxWidth = 4000,
+  minRightWidth = 300,
 }: UseResizableProps = {}) => {
   const [width, setWidth] = useState<number>(initialWidthVw);
   const [isResizing, setIsResizing] = useState(false);
@@ -25,19 +27,19 @@ export const useResizable = ({
 
   const resize = useCallback((e: MouseEvent) => {
     if (isResizing) {
-      // Calculate new width relative to the window right edge
-      const newWidthPx = window.innerWidth - e.clientX;
+      // Calculate new width relative to the window left edge (Left-based)
+      const newWidthPx = e.clientX;
       
-      // Convert to percentage of current window width
-      const vwValue = (newWidthPx / window.innerWidth) * 100;
+      // Calculate max allowed width based on window width and minRightWidth
+      const maxAllowedWidth = window.innerWidth - minRightWidth;
       
-      // Clamp between min/max
-      const clampedPx = Math.min(Math.max(newWidthPx, minWidth), maxWidth);
+      // Clamp between min and max constraints
+      const clampedPx = Math.min(Math.max(newWidthPx, minWidth), maxWidth, maxAllowedWidth);
       const finalVw = (clampedPx / window.innerWidth) * 100;
       
       setWidth(finalVw);
     }
-  }, [isResizing, minWidth, maxWidth]);
+  }, [isResizing, minWidth, maxWidth, minRightWidth]);
 
   useEffect(() => {
     if (isResizing) {

@@ -44,7 +44,7 @@ export default function Home() {
       
       <main className="flex-1 flex flex-row overflow-hidden relative">
         {(layoutMode === 'editor' || layoutMode === 'split') && (
-          <div className={`${layoutMode === 'editor' ? 'w-full' : ''}`} style={layoutMode === 'split' ? { width: `${100 - width}vw` } : undefined}>
+          <div className={`${layoutMode === 'editor' ? 'w-full' : ''}`} style={layoutMode === 'split' ? { width: `${width}vw` } : undefined}>
             <CodeEditor 
               value={content} 
               onChange={(val) => setContent(val || '')} 
@@ -58,7 +58,7 @@ export default function Home() {
         )}
 
         {(layoutMode === 'preview' || layoutMode === 'split') && (
-          <div className={`${layoutMode === 'preview' ? 'w-full' : ''}`} style={layoutMode === 'split' ? { width: `${100 - width}vw` } : undefined}>
+          <div className={`${layoutMode === 'preview' ? 'w-full' : 'flex-1 min-w-0'}`}>
             <PreviewPanel 
               content={content} 
               onLineClick={goToLine}
