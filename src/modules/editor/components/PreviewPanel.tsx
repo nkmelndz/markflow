@@ -1,7 +1,8 @@
 import React from 'react';
 import MDEditor from '@uiw/react-md-editor';
 import { usePreview } from '@/modules/editor/hooks/usePreview';
-import styles from './PreviewPanel.module.css';
+import marpStyles from './MarpPreview.module.css';
+import markdownStyles from './MarkdownPreview.module.css';
 import { clsx } from 'clsx';
 
 interface PreviewPanelProps {
@@ -41,35 +42,16 @@ export const PreviewPanel = ({ content, onLineClick, width, viewMode }: PreviewP
         >
           <style>{css}</style>
           <div 
-            className={clsx("marp-content", styles.previewContainer)}
+            className={clsx("marp-content", marpStyles.previewContainer)}
             dangerouslySetInnerHTML={{ __html: html }} 
           />
         </div>
       ) : (
         <div 
-            className="flex-1 w-full overflow-y-auto p-8 bg-[#1e1e1e]" 
+            className={clsx("flex-1 w-full overflow-y-auto p-8 bg-[#1e1e1e]", markdownStyles.markdownContainer)}
             data-color-mode="dark"
             onClick={handlePreviewClick}
         >
-            <style jsx global>{`
-              .wmde-markdown {
-                background-color: transparent !important;
-                font-family: inherit;
-              }
-              .wmde-markdown pre, 
-              .wmde-markdown code {
-                background-color: #2d2d2d !important;
-              }
-              .wmde-markdown table tr,
-              .wmde-markdown table th,
-              .wmde-markdown table td {
-                background-color: transparent !important;
-                border-color: #444 !important;
-              }
-              .wmde-markdown img {
-                background-color: transparent !important;
-              }
-            `}</style>
             <MDEditor.Markdown 
                 source={content} 
                 className="!bg-transparent !text-[#c9d1d9]"
