@@ -17,6 +17,7 @@ Start writing your content here.
 export const useEditor = () => {
   const [content, setContent] = useState<string>('');
   const [viewMode, setViewMode] = useState<'marp' | 'markdown'>('markdown');
+  const [layoutMode, setLayoutMode] = useState<'editor' | 'split' | 'preview'>('split');
   const [isInitialized, setIsInitialized] = useState(false);
   const editorRef = useRef<any>(null);
 
@@ -24,6 +25,7 @@ export const useEditor = () => {
   useEffect(() => {
     const savedContent = localStorage.getItem('markflow_content_v1');
     const savedViewMode = localStorage.getItem('markflow_viewmode_v1');
+    const savedLayoutMode = localStorage.getItem('markflow_layoutmode_v1');
     
     if (savedContent) {
       setContent(savedContent);
@@ -32,7 +34,11 @@ export const useEditor = () => {
     }
 
     if (savedViewMode === 'marp' || savedViewMode === 'markdown') {
-      setViewMode(savedViewMode);
+      setViewMode(savedViewMode as 'marp' | 'markdown');
+    }
+
+    if (savedLayoutMode === 'editor' || savedLayoutMode === 'split' || savedLayoutMode === 'preview') {
+      setLayoutMode(savedLayoutMode as 'editor' | 'split' | 'preview');
     }
 
     setIsInitialized(true);
@@ -43,8 +49,9 @@ export const useEditor = () => {
     if (isInitialized) {
         localStorage.setItem('markflow_content_v1', content);
         localStorage.setItem('markflow_viewmode_v1', viewMode);
+        localStorage.setItem('markflow_layoutmode_v1', layoutMode);
     }
-  }, [content, viewMode, isInitialized]);
+  }, [content, viewMode, layoutMode, isInitialized]);
 
   const handleEditorDidMount = (editor: any) => {
     editorRef.current = editor;
@@ -68,6 +75,8 @@ export const useEditor = () => {
     setContent,
     viewMode,
     setViewMode,
+    layoutMode,
+    setLayoutMode,
     handleEditorDidMount,
     goToLine,
     isInitialized

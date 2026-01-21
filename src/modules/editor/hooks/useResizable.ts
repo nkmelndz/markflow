@@ -11,7 +11,7 @@ export const useResizable = ({
   minWidth = 300,
   maxWidth = 1200,
 }: UseResizableProps = {}) => {
-  const [width, setWidth] = useState<number | string>(`${initialWidthVw}vw`);
+  const [width, setWidth] = useState<number>(initialWidthVw);
   const [isResizing, setIsResizing] = useState(false);
 
   const startResizing = useCallback((e: React.MouseEvent) => {
@@ -31,14 +31,11 @@ export const useResizable = ({
       // Convert to percentage of current window width
       const vwValue = (newWidthPx / window.innerWidth) * 100;
       
-      // Clamp between min/max (converting min/max logic to appx percentage check or just keep pixels? 
-      // Strictly speaking, minWidth/maxWidth props are numbers (pixels). 
-      // We should check the pixel value against constraints, THEN convert to VW.)
-      
+      // Clamp between min/max
       const clampedPx = Math.min(Math.max(newWidthPx, minWidth), maxWidth);
       const finalVw = (clampedPx / window.innerWidth) * 100;
       
-      setWidth(`${finalVw}vw`);
+      setWidth(finalVw);
     }
   }, [isResizing, minWidth, maxWidth]);
 

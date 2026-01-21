@@ -1,16 +1,54 @@
 import React from 'react';
-import { Download, Share } from 'lucide-react';
+import { Download, Share, PenLine, Columns, Eye } from 'lucide-react';
 
 interface EditorHeaderProps {
   viewMode: 'marp' | 'markdown';
   setViewMode: (mode: 'marp' | 'markdown') => void;
+  layoutMode: 'editor' | 'split' | 'preview';
+  setLayoutMode: (mode: 'editor' | 'split' | 'preview') => void;
 }
 
-export const EditorHeader = ({ viewMode, setViewMode }: EditorHeaderProps) => {
+export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode }: EditorHeaderProps) => {
   return (
     <header className="h-16 border-b border-white/10 bg-[#1e1e1e] flex items-center justify-between px-6 shrink-0 relative">
       <div className="flex items-center gap-4">
         <h1 className="text-xl font-bold text-white tracking-tight">markflow</h1>
+        
+        <div className="bg-[#121212] p-1 rounded-lg flex items-center gap-1 ml-2">
+          <button
+            onClick={() => setLayoutMode('editor')}
+            className={`p-1.5 rounded-md transition-all ${
+              layoutMode === 'editor'
+                ? 'bg-[#2d2d2d] text-white shadow-sm'
+                : 'text-gray-400 hover:text-gray-200'
+            }`}
+            title="Editor only"
+          >
+            <PenLine size={16} />
+          </button>
+          <button
+            onClick={() => setLayoutMode('split')}
+            className={`p-1.5 rounded-md transition-all ${
+              layoutMode === 'split'
+                ? 'bg-[#2d2d2d] text-white shadow-sm'
+                : 'text-gray-400 hover:text-gray-200'
+            }`}
+            title="Split view"
+          >
+            <Columns size={16} />
+          </button>
+          <button
+            onClick={() => setLayoutMode('preview')}
+            className={`p-1.5 rounded-md transition-all ${
+              layoutMode === 'preview'
+                ? 'bg-[#2d2d2d] text-white shadow-sm'
+                : 'text-gray-400 hover:text-gray-200'
+            }`}
+            title="Preview only"
+          >
+            <Eye size={16} />
+          </button>
+        </div>
       </div>
 
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
