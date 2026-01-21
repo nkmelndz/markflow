@@ -21,16 +21,6 @@ export const EditorHeader = ({ viewMode, setViewMode }: EditorHeaderProps) => {
 
       <div className="bg-[#121212] p-1 rounded-lg flex items-center gap-1">
         <button
-          onClick={() => setViewMode('marp')}
-          className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-            viewMode === 'marp'
-              ? 'bg-[#2d2d2d] text-white shadow-sm'
-              : 'text-gray-400 hover:text-gray-200'
-          }`}
-        >
-          Slides
-        </button>
-        <button
           onClick={() => setViewMode('markdown')}
           className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
             viewMode === 'markdown'
@@ -39,6 +29,16 @@ export const EditorHeader = ({ viewMode, setViewMode }: EditorHeaderProps) => {
           }`}
         >
           Doc
+        </button>
+        <button
+          onClick={() => setViewMode('marp')}
+          className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+            viewMode === 'marp'
+              ? 'bg-[#2d2d2d] text-white shadow-sm'
+              : 'text-gray-400 hover:text-gray-200'
+          }`}
+        >
+          Slides
         </button>
       </div>
 

@@ -11,7 +11,7 @@ import { useResizable } from '@/modules/editor/hooks/useResizable';
 export default function Home() {
   const { content, setContent, handleEditorDidMount, goToLine } = useEditor();
   const { width, startResizing } = useResizable({ initialWidthVw: 50 });
-  const [viewMode, setViewMode] = useState<'marp' | 'markdown'>('marp');
+  const [viewMode, setViewMode] = useState<'marp' | 'markdown'>('markdown');
 
   return (
     <div className="flex flex-col h-screen w-full bg-[#1e1e1e] text-white overflow-hidden">
