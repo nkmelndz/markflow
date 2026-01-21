@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, Share, PenLine, Columns, Eye, FileText, Presentation, FileCode, Printer } from 'lucide-react';
+import { Download, Share2, PenLine, Columns, Eye, FileText, Presentation, FileCode, Printer } from 'lucide-react';
 
 interface EditorHeaderProps {
   viewMode: 'marp' | 'markdown';
@@ -131,7 +131,7 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode 
         </div>
         
         <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-blue-900/20">
-          <Share size={18} />
+          <Share2 size={18} />
           Share
         </button>
       </div>
