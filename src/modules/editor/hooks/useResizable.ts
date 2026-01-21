@@ -2,16 +2,16 @@ import { useState, useCallback, useEffect } from 'react';
 
 interface UseResizableProps {
   initialWidthVw?: number; // VW percentage (0-100)
-  minWidth?: number;
-  maxWidth?: number;
+  minLeftWidth?: number;
+  minRightWidth?: number;
 }
 
 export const useResizable = ({ 
   initialWidthVw = 50,
-  minWidth = 300,
-  maxWidth = 1200,
+  minLeftWidth = 300,
+  minRightWidth = 300,
 }: UseResizableProps = {}) => {
-  const [width, setWidth] = useState<number | string>(`${initialWidthVw}vw`);
+  const [width, setWidth] = useState<number>(initialWidthVw);
   const [isResizing, setIsResizing] = useState(false);
 
   const startResizing = useCallback((e: React.MouseEvent) => {
@@ -25,22 +25,19 @@ export const useResizable = ({
 
   const resize = useCallback((e: MouseEvent) => {
     if (isResizing) {
-      // Calculate new width relative to the window right edge
-      const newWidthPx = window.innerWidth - e.clientX;
+      // Calculate new width relative to the window left edge (Left-based)
+      const newWidthPx = e.clientX;
       
-      // Convert to percentage of current window width
-      const vwValue = (newWidthPx / window.innerWidth) * 100;
+      // Calculate max allowed width based on window width and minRightWidth
+      const maxAllowedWidth = window.innerWidth - minRightWidth;
       
-      // Clamp between min/max (converting min/max logic to appx percentage check or just keep pixels? 
-      // Strictly speaking, minWidth/maxWidth props are numbers (pixels). 
-      // We should check the pixel value against constraints, THEN convert to VW.)
-      
-      const clampedPx = Math.min(Math.max(newWidthPx, minWidth), maxWidth);
+      // Clamp between min and max constraints
+      const clampedPx = Math.min(Math.max(newWidthPx, minLeftWidth), maxAllowedWidth);
       const finalVw = (clampedPx / window.innerWidth) * 100;
       
-      setWidth(`${finalVw}vw`);
+      setWidth(finalVw);
     }
-  }, [isResizing, minWidth, maxWidth]);
+  }, [isResizing, minLeftWidth, minRightWidth]);
 
   useEffect(() => {
     if (isResizing) {
