@@ -20,7 +20,7 @@ export const useExport = () => {
     downloadBlob(blob, filename);
   }, []);
 
-  const exportHTML = useCallback((content: string, viewMode: 'marp' | 'markdown', filename: string = 'document.html') => {
+  const generateFullHTML = (content: string, viewMode: 'marp' | 'markdown', filename: string) => {
     let htmlContent = '';
 
     if (viewMode === 'marp') {
@@ -31,11 +31,15 @@ export const useExport = () => {
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Marp Slide</title>
+  <title>${filename}</title>
   <style>
     ${css}
-    body { margin: 0; background: #222; }
-    .marp-content { box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin: 20px auto; }
+    body { margin: 0; background: white; }
+    .marp-content { box-shadow: none; margin: 0 auto; break-after: page; }
+    @media print {
+        @page { size: landscape; margin: 0; }
+        .marp-content { break-after: page; page-break-after: always; }
+    }
   </style>
 </head>
 <body>
@@ -50,7 +54,7 @@ export const useExport = () => {
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Markdown Document</title>
+  <title>${filename}</title>
   <style>
     body { 
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -58,14 +62,17 @@ export const useExport = () => {
       max-width: 800px;
       margin: 0 auto;
       padding: 2rem;
-      background: #0d1117;
-      color: #c9d1d9;
+      color: black;
+      background: white;
     }
-    pre { background: #161b22; padding: 16px; border-radius: 6px; overflow: auto; }
+    pre { background: #f6f8fa; padding: 16px; border-radius: 6px; overflow: auto; }
     code { font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace; }
     img { max-width: 100%; }
-    a { color: #58a6ff; }
-    h1, h2, h3, h4, h5, h6 { color: #ffffff; border-bottom: 1px solid #21262d; padding-bottom: .3em; }
+    a { color: #0969da; }
+    h1, h2, h3, h4, h5, h6 { color: #24292f; border-bottom: 1px solid #d0d7de; padding-bottom: .3em; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #d0d7de; padding: 6px 13px; }
+    tr:nth-child(2n) { background-color: #f6f8fa; }
   </style>
 </head>
 <body>
@@ -73,63 +80,44 @@ export const useExport = () => {
 </body>
 </html>`;
     }
+    return htmlContent;
+  };
 
+  const exportHTML = useCallback((content: string, viewMode: 'marp' | 'markdown', filename: string = 'document.html') => {
+    const htmlContent = generateFullHTML(content, viewMode, filename);
     const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
     downloadBlob(blob, filename);
   }, []);
 
-  const triggerPrint = useCallback(() => {
-    // Add temporary print styles
-    const style = document.createElement('style');
-    style.id = 'temp-print-styles';
-    style.innerHTML = `
-      @media print {
-        @page { margin: 0; size: auto; }
-        body * { visibility: hidden; }
-        /* Target Marp slides container specifically */
-        .marp-content, .marp-content * { 
-            visibility: visible; 
-        }
-        .marp-content {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100% !important;
-            height: auto !important;
-            margin: 0 !important;
-            box-shadow: none !important;
-            break-after: page;
-        }
+  const triggerPrint = useCallback((content: string, viewMode: 'marp' | 'markdown') => {
+    const htmlContent = generateFullHTML(content, viewMode, 'Print');
+    
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'fixed';
+    iframe.style.right = '0';
+    iframe.style.bottom = '0';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = '0';
+    
+    document.body.appendChild(iframe);
+    
+    const doc = iframe.contentWindow?.document;
+    if (doc) {
+        doc.open();
+        doc.write(htmlContent);
+        doc.close();
 
-        /* Target wrapper if needed */
-        main { display: block !important; }
-        
-        /* If in normal markdown mode */
-        .wmde-markdown, .wmde-markdown * { visibility: visible; }
-        .wmde-markdown {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            background: white !important;
-            color: black !important;
-        }
-        .wmde-markdown code, .wmde-markdown pre { 
-            background: #f5f5f5 !important; 
-            color: black !important; 
-        }
-      }
-    `;
-    document.head.appendChild(style);
-
-    window.print();
-
-    // Cleanup after print dialog usage (timeout is a simple safety, though print blocks in some browsers)
-    // Actually, safest is to remove it on window focus or just leave it since it's only active @media print
-    // But removing is cleaner.
-    setTimeout(() => {
-      document.head.removeChild(style);
-    }, 1000);
+        // Wait for resources to load then print
+        iframe.contentWindow?.focus();
+        setTimeout(() => {
+            iframe.contentWindow?.print();
+            // Cleanup
+            setTimeout(() => {
+                document.body.removeChild(iframe);
+            }, 1000);
+        }, 500);
+    }
   }, []);
 
   return { exportMarkdown, exportHTML, triggerPrint };

@@ -45,7 +45,7 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
     } else if (type === 'html') {
       exportHTML(content, viewMode, `${safeFileName}.html`);
     } else if (type === 'pdf') {
-      triggerPrint();
+      triggerPrint(content, viewMode);
     }
     setIsExportOpen(false);
   };
