@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { Marp } from '@marp-team/marp-core';
-import markdownit from 'markdown-it';
+import MDEditor from '@uiw/react-md-editor';
+import { renderToStaticMarkup } from 'react-dom/server';
 
 export const useExport = () => {
   
@@ -47,8 +48,17 @@ export const useExport = () => {
 </body>
 </html>`;
     } else {
-      const md = markdownit({ html: true });
-      const rendered = md.render(content);
+      // Use renderToStaticMarkup to convert the React component to HTML string
+      const rendered = renderToStaticMarkup(
+        <MDEditor.Markdown 
+            source={content} 
+            style={{ 
+                backgroundColor: 'transparent', 
+                color: 'inherit' 
+            }} 
+        />
+      );
+      
       htmlContent = `
 <!DOCTYPE html>
 <html>
@@ -65,18 +75,66 @@ export const useExport = () => {
       color: black;
       background: white;
     }
-    pre { background: #f6f8fa; padding: 16px; border-radius: 6px; overflow: auto; }
-    code { font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace; }
-    img { max-width: 100%; }
-    a { color: #0969da; }
-    h1, h2, h3, h4, h5, h6 { color: #24292f; border-bottom: 1px solid #d0d7de; padding-bottom: .3em; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #d0d7de; padding: 6px 13px; }
-    tr:nth-child(2n) { background-color: #f6f8fa; }
+    
+    /* MDEditor Styles Replication for Print/Export */
+    .wmde-markdown {
+        background-color: transparent !important;
+        font-family: inherit;
+        font-size: 16px;
+    }
+    
+    .wmde-markdown h1, .wmde-markdown h2, .wmde-markdown h3 {
+        border-bottom: 1px solid #d0d7de;
+        padding-bottom: .3em;
+        color: #24292f;
+    }
+
+    .wmde-markdown pre { background: #f6f8fa !important; padding: 16px; border-radius: 6px; overflow: auto; }
+    .wmde-markdown code { background: rgba(175, 184, 193, 0.2); border-radius: 6px; font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace; }
+    .wmde-markdown pre code { background: transparent; }
+    
+    .wmde-markdown table { border-collapse: collapse; width: 100%; margin-top: 0; margin-bottom: 16px; }
+    .wmde-markdown table tr { background-color: #ffffff; border-top: 1px solid #d8dee4; }
+    .wmde-markdown table tr:nth-child(2n) { background-color: #f6f8fa; }
+    .wmde-markdown table th, .wmde-markdown table td { border: 1px solid #d0d7de; padding: 6px 13px; }
+    
+    .wmde-markdown a { color: #0969da; text-decoration: none; }
+    .wmde-markdown a:hover { text-decoration: underline; }
+    .wmde-markdown img { max-width: 100%; box-sizing: content-box; background-color: transparent; }
+    
+    /* Hide interactive elements for export */
+    .wmde-markdown h1 > a[aria-hidden="true"],
+    .wmde-markdown h2 > a[aria-hidden="true"],
+    .wmde-markdown h3 > a[aria-hidden="true"],
+    .wmde-markdown h4 > a[aria-hidden="true"],
+    .wmde-markdown h5 > a[aria-hidden="true"],
+    .wmde-markdown h6 > a[aria-hidden="true"] {
+        display: none !important;
+    }
+    
+    /* Aggressively hide all buttons and potential copy icons */
+    .wmde-markdown button,
+    .wmde-markdown .wc-copy-btn,
+    .wmde-markdown .copied,
+    .wmde-markdown svg.octicon-copy,
+    .wmde-markdown svg.octicon-check { 
+        display: none !important; 
+    }
+
+    /* Remove bullets from task lists */
+    .wmde-markdown ul.contains-task-list {
+        list-style: none !important;
+        padding-left: 0 !important;
+    }
+    .wmde-markdown li.task-list-item {
+        list-style: none !important;
+    }
   </style>
 </head>
 <body>
-  ${rendered}
+  <div class="wmde-markdown">
+    ${rendered}
+  </div>
 </body>
 </html>`;
     }
