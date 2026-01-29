@@ -63,13 +63,14 @@ export const EditorToolbar = ({ editorRef }: EditorToolbarProps) => {
     editor.focus();
   };
 
-  const insertBlock = (type: 'link' | 'image' | 'table' | 'rule') => {
+  const insertBlock = (type: 'link' | 'image' | 'table' | 'rule' | 'code') => {
     const editor = editorRef.current;
     if (!editor) return;
 
     const selection = editor.getSelection();
     let text = '';
     let cursorOffset = 0;
+    let lineDelta = 0;
     
     switch (type) {
       case 'link':
@@ -83,6 +84,11 @@ export const EditorToolbar = ({ editorRef }: EditorToolbarProps) => {
       case 'rule':
         text = '\n---\n';
         break;
+      case 'code':
+        text = '```\n\n```';
+        lineDelta = 1; // Move 1 line down
+        cursorOffset = 1; // Set column to 1 (will be handled specially)
+        break;
     }
 
     editor.executeEdits('toolbar', [{
@@ -91,10 +97,10 @@ export const EditorToolbar = ({ editorRef }: EditorToolbarProps) => {
       forceMoveMarkers: true
     }]);
     
-    if (cursorOffset > 0) {
+    if (cursorOffset > 0 || lineDelta > 0) {
       const position = {
-        lineNumber: selection.startLineNumber,
-        column: selection.startColumn + cursorOffset
+        lineNumber: selection.startLineNumber + lineDelta,
+        column: lineDelta > 0 ? 1 : selection.startColumn + cursorOffset
       };
       editor.setPosition(position);
     }
@@ -130,7 +136,7 @@ export const EditorToolbar = ({ editorRef }: EditorToolbarProps) => {
 
       {/* Code */}
       <div className="flex items-center gap-0.5 pr-2 border-r border-white/10 mr-2">
-        <ToolbarButton onClick={() => insertText('`', '`')} icon={<Code size={14} />} title="Inline Code" />
+        <ToolbarButton onClick={() => insertBlock('code')} icon={<Code size={14} />} title="Code Block" />
         <ToolbarButton onClick={() => insertLineStart('> ')} icon={<Quote size={14} />} title="Blockquote" />
       </div>
 
