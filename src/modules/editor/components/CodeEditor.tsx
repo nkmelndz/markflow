@@ -32,7 +32,8 @@ export const CodeEditor = ({ value, onChange, onMount }: CodeEditorProps) => {
         const checkListMatch = lineContent.match(checkListPattern);
         
         if (unorderedMatch || orderedMatch || checkListMatch) {
-            const match = unorderedMatch || orderedMatch || checkListMatch;
+            // Prioritize checkListMatch because it overlaps with unorderedMatch (starts with "- ")
+            const match = checkListMatch || orderedMatch || unorderedMatch;
             const indent = match[1];
             const marker = match[2];
             const content = match[match.length - 1].trim(); // Last group is content
