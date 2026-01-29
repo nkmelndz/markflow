@@ -28,6 +28,14 @@ export const EditorToolbar = ({ editorRef }: EditorToolbarProps) => {
     }]);
     
     // Restore focus and adjust cursor
+    if (text.length === 0) {
+      const position = {
+        lineNumber: selection.startLineNumber,
+        column: selection.startColumn + before.length
+      };
+      editor.setPosition(position);
+    }
+    
     editor.focus();
   };
 
