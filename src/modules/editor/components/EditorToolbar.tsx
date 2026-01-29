@@ -69,13 +69,16 @@ export const EditorToolbar = ({ editorRef }: EditorToolbarProps) => {
 
     const selection = editor.getSelection();
     let text = '';
+    let cursorOffset = 0;
     
     switch (type) {
       case 'link':
-        text = '[Link text](url)';
+        text = '[](https://)';
+        cursorOffset = 1;
         break;
       case 'image':
-        text = '![Alt text](url)';
+        text = '![](https://)';
+        cursorOffset = 2;
         break;
       case 'rule':
         text = '\n---\n';
@@ -87,6 +90,14 @@ export const EditorToolbar = ({ editorRef }: EditorToolbarProps) => {
       text: text,
       forceMoveMarkers: true
     }]);
+    
+    if (cursorOffset > 0) {
+      const position = {
+        lineNumber: selection.startLineNumber,
+        column: selection.startColumn + cursorOffset
+      };
+      editor.setPosition(position);
+    }
     
     editor.focus();
   };
