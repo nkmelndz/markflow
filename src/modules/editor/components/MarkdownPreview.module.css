@@ -19,6 +19,28 @@
   background-color: transparent !important;
 }
 
+/* List Styles to fix visibility */
+.markdownContainer :global(.wmde-markdown ul) {
+  list-style-type: disc !important;
+  list-style-position: outside !important;
+  margin-left: 1.5em !important;
+}
+
+.markdownContainer :global(.wmde-markdown ol) {
+  list-style-type: decimal !important;
+  list-style-position: outside !important;
+  margin-left: 1.5em !important;
+}
+
+.markdownContainer :global(.wmde-markdown li) {
+  color: #c9d1d9 !important;
+}
+
+.markdownContainer :global(.wmde-markdown li::marker) {
+  color: #c9d1d9 !important;
+  font-weight: bold;
+}
+
 /* Highlight hover effect for sync */
 .markdownContainer :global([data-line]):hover:not(:has(:global([data-line]):hover)) {
   outline: 2px solid rgba(60, 100, 255, 0.5);
