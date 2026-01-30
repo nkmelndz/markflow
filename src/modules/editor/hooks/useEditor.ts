@@ -1,18 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-
-const DEFAULT_CONTENT = `
-# Welcome to Markflow
-
-Start writing your content here.
-
----
-
-## Features
-
-- **Markdown Support**: Write standard markdown.
-- **Marp Slides**: Transform text into presentations.
-- **Real-time Preview**: See changes instantly.
-`;
+import { DEFAULT_CONTENT } from '@/modules/editor/constants/defaultContent';
 
 export const useEditor = () => {
   const [content, setContent] = useState<string>('');
