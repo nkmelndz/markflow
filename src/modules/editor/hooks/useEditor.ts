@@ -73,6 +73,11 @@ export const useEditor = () => {
     }
   }, [content, isInitialized, isTitleManual, hasAutoUpdated]);
 
+  // Update document title
+  useEffect(() => {
+    document.title = `${fileName || 'Untitled'} - Markflow`;
+  }, [fileName]);
+
   const updateFileName = (name: string) => {
     setFileName(name);
     setIsTitleManual(true);
