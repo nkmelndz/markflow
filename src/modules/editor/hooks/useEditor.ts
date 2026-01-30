@@ -9,12 +9,17 @@ export const useEditor = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const editorRef = useRef<any>(null);
 
+  const [isTitleManual, setIsTitleManual] = useState(false);
+  const [hasAutoUpdated, setHasAutoUpdated] = useState(false);
+
   // Load from LocalStorage on mount
   useEffect(() => {
     const savedContent = localStorage.getItem('markflow_content_v1');
     const savedViewMode = localStorage.getItem('markflow_viewmode_v1');
     const savedLayoutMode = localStorage.getItem('markflow_layoutmode_v1');
     const savedFileName = localStorage.getItem('markflow_filename_v1');
+    const savedIsTitleManual = localStorage.getItem('markflow_istitlemanual_v1');
+    const savedHasAutoUpdated = localStorage.getItem('markflow_hasautoupdated_v1');
     
     if (savedContent) {
       setContent(savedContent);
@@ -24,6 +29,14 @@ export const useEditor = () => {
 
     if (savedFileName) {
         setFileName(savedFileName);
+    }
+    
+    if (savedIsTitleManual === 'true') {
+        setIsTitleManual(true);
+    }
+    
+    if (savedHasAutoUpdated === 'true') {
+        setHasAutoUpdated(true);
     }
 
     if (savedViewMode === 'marp' || savedViewMode === 'markdown') {
@@ -44,8 +57,26 @@ export const useEditor = () => {
         localStorage.setItem('markflow_viewmode_v1', viewMode);
         localStorage.setItem('markflow_layoutmode_v1', layoutMode);
         localStorage.setItem('markflow_filename_v1', fileName);
+        localStorage.setItem('markflow_istitlemanual_v1', String(isTitleManual));
+        localStorage.setItem('markflow_hasautoupdated_v1', String(hasAutoUpdated));
     }
-  }, [content, viewMode, layoutMode, fileName, isInitialized]);
+  }, [content, viewMode, layoutMode, fileName, isInitialized, isTitleManual, hasAutoUpdated]);
+
+  // Auto-update title from content
+  useEffect(() => {
+    if (isInitialized && !isTitleManual && !hasAutoUpdated) {
+        const titleMatch = content.match(/^#\s+(.+)$/m);
+        if (titleMatch && titleMatch[1]) {
+            setFileName(titleMatch[1].trim());
+            setHasAutoUpdated(true);
+        }
+    }
+  }, [content, isInitialized, isTitleManual, hasAutoUpdated]);
+
+  const updateFileName = (name: string) => {
+    setFileName(name);
+    setIsTitleManual(true);
+  };
 
   const handleEditorDidMount = (editor: any, monaco: any) => {
     editorRef.current = editor;
@@ -143,6 +174,6 @@ export const useEditor = () => {
     goToLine,
     isInitialized,
     fileName,
-    setFileName
+    setFileName: updateFileName
   };
 };
