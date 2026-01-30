@@ -8,8 +8,8 @@ interface UseResizableProps {
 
 export const useResizable = ({ 
   initialWidthVw = 50,
-  minLeftWidth = 300,
-  minRightWidth = 300,
+  minLeftWidth = 420,
+  minRightWidth = 420,
 }: UseResizableProps = {}) => {
   const [width, setWidth] = useState<number>(initialWidthVw);
   const [isResizing, setIsResizing] = useState(false);

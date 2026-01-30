@@ -1,5 +1,6 @@
 import React from 'react';
 import MDEditor from '@uiw/react-md-editor';
+import remarkBreaks from 'remark-breaks';
 import { usePreview } from '@/modules/editor/hooks/usePreview';
 import marpStyles from './MarpPreview.module.css';
 import markdownStyles from './MarkdownPreview.module.css';
@@ -56,6 +57,7 @@ export const PreviewPanel = ({ content, onLineClick, width, viewMode }: PreviewP
                 source={content} 
                 className="!bg-transparent !text-[#c9d1d9]"
                 components={MarkdownComponents}
+                remarkPlugins={[remarkBreaks]}
             />
         </div>
       )}

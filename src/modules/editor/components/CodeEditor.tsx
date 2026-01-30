@@ -13,6 +13,7 @@ export const CodeEditor = ({ value, onChange, onMount }: CodeEditorProps) => {
 
   const handleEditorDidMount = (editor: any, monaco: any) => {
     editorRef.current = editor;
+    
     if (onMount) {
       onMount(editor, monaco);
     }
@@ -27,7 +28,7 @@ export const CodeEditor = ({ value, onChange, onMount }: CodeEditorProps) => {
          <Editor
           height="100%"
           defaultLanguage="markdown"
-          value={value}
+          defaultValue={value}
           onChange={onChange}
           onMount={handleEditorDidMount}
           theme="vs-dark"
