@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, Share2, PenLine, Columns, Eye, FileText, Presentation, FileCode, Printer } from 'lucide-react';
+import { Download, Upload, PenLine, Columns, Eye, FileText, Presentation, FileCode, Printer } from 'lucide-react';
 import { useExport } from '../hooks/useExport';
 
 interface EditorHeaderProps {
@@ -8,15 +8,17 @@ interface EditorHeaderProps {
   layoutMode: 'editor' | 'split' | 'preview';
   setLayoutMode: (mode: 'editor' | 'split' | 'preview') => void;
   content: string;
+  setContent: (content: string) => void;
   fileName: string;
   setFileName: (name: string) => void;
 }
 
-export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode, content, fileName, setFileName }: EditorHeaderProps) => {
+export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode, content, fileName, setFileName, setContent }: EditorHeaderProps) => {
   const [isExportOpen, setIsExportOpen] = React.useState(false);
   const [isEditingName, setIsEditingName] = React.useState(false);
   const exportMenuRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
   const { exportMarkdown, exportHTML, triggerPrint } = useExport();
 
   React.useEffect(() => {
@@ -48,6 +50,29 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
       triggerPrint(content, viewMode);
     }
     setIsExportOpen(false);
+  };
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target?.result;
+      if (typeof text === 'string') {
+        setContent(text);
+        // Remove extension from filename if present
+        const nameWithoutExt = file.name.replace(/\.(md|markdown|txt)$/i, '');
+        setFileName(nameWithoutExt);
+      }
+    };
+    reader.readAsText(file);
+    // Reset input so same file can be selected again
+    event.target.value = '';
   };
 
   return (
@@ -147,10 +172,25 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
       </div>
 
       <div className="flex items-center gap-3">
+        <input 
+            type="file" 
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept=".md,.markdown,.txt"
+            className="hidden"
+        />
+        <button 
+            onClick={handleImportClick}
+            className="flex items-center gap-2 px-4 py-2 hover:bg-white/5 text-gray-300 rounded-lg text-sm transition-colors"
+        >
+          <Upload size={18} />
+          Import
+        </button>
+
         <div className="relative" ref={exportMenuRef}>
           <button 
             onClick={() => setIsExportOpen(!isExportOpen)}
-            className={`flex items-center gap-2 px-4 py-2 hover:bg-white/5 text-gray-300 rounded-lg text-sm transition-colors ${isExportOpen ? 'bg-white/5 text-white' : ''}`}
+            className={`flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-blue-900/20 ${isExportOpen ? 'bg-blue-500' : ''}`}
           >
             <Download size={18} />
             Export
@@ -184,11 +224,6 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
             </div>
           )}
         </div>
-        
-        <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-blue-900/20">
-          <Share2 size={18} />
-          Share
-        </button>
       </div>
     </header>
   );

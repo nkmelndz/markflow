@@ -43,6 +43,7 @@ export default function Home() {
         layoutMode={layoutMode}
         setLayoutMode={setLayoutMode}
         content={content}
+        setContent={setContent}
         fileName={fileName}
         setFileName={setFileName}
       />
