@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Keyboard, Sparkles, FileText, Download } from 'lucide-react';
+import { X, Sparkles, Download, PenLine, Heart } from 'lucide-react';
 
 interface HelpModalProps {
   onClose: () => void;
@@ -19,7 +19,7 @@ export const HelpModal = ({ onClose }: HelpModalProps) => {
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
         onClick={onClose}
       />
       
@@ -51,6 +51,9 @@ export const HelpModal = ({ onClose }: HelpModalProps) => {
             <div className="bg-white/5 rounded-lg p-4 space-y-3 text-sm text-gray-300">
               <p>
                 Use the <strong className="text-white">Sparkles</strong> button in the toolbar to ask the AI to generate or modify content.
+                <span className="block text-xs text-yellow-500/80 mt-1">
+                  Note: The virtual assistant may take up to 15 seconds to respond in some cases.
+                </span>
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                 <div className="bg-black/20 p-3 rounded border border-white/5">
@@ -71,28 +74,21 @@ export const HelpModal = ({ onClose }: HelpModalProps) => {
             </div>
           </section>
 
-          {/* Formatting Section */}
+          {/* Toolbar Guide */}
           <section>
             <h3 className="flex items-center gap-2 text-lg font-semibold text-white mb-3">
-              <FileText size={18} className="text-blue-400" />
-              Supported Formats
+              <PenLine size={18} className="text-blue-400" />
+              Toolbar Guide
             </h3>
-            <div className="space-y-3">
-                <div className="flex items-start gap-3 text-sm text-gray-300">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 shrink-0" />
-                    <div>
-                        <strong className="text-white">Markdown:</strong> Standard formatting. Use headers, lists, code blocks, tables, and images.
-                    </div>
-                </div>
-                <div className="flex items-start gap-3 text-sm text-gray-300">
-                    <div className="w-1.5 h-1.5 rounded-full bg-pink-500 mt-2 shrink-0" />
-                    <div>
-                        <strong className="text-white">Marp Slides:</strong> Use <code className="bg-white/10 px-1 rounded">---</code> to separate slides. View in <strong>Marp Mode</strong> to see the presentation preview.
-                    </div>
-                </div>
+            <div className="bg-white/5 rounded-lg p-4 text-sm text-gray-300 space-y-2">
+                <p>
+                    The editor toolbar provides quick access to common formatting options. You can easily <strong>Bold</strong>, <em>Italicize</em>, or <span className="line-through">Strikethrough</span> text.
+                </p>
+                <p>
+                    Create lists (bullet, ordered, or checklists), add links, images, code blocks, and blockquotes. Use the AI button to get intelligent writing assistance directly in your document.
+                </p>
             </div>
           </section>
-
           {/* Export Section */}
           <section>
              <h3 className="flex items-center gap-2 text-lg font-semibold text-white mb-3">
@@ -109,24 +105,27 @@ export const HelpModal = ({ onClose }: HelpModalProps) => {
             </ul>
           </section>
 
-          {/* Shortcuts (Placeholder for future) */}
-           <section>
+          {/* Support Section */}
+          <section>
              <h3 className="flex items-center gap-2 text-lg font-semibold text-white mb-3">
-              <Keyboard size={18} className="text-orange-400" />
-              Quick Tips
+              <Heart size={18} className="text-red-400" />
+              Support Markflow
             </h3>
-             <div className="grid grid-cols-2 gap-2 text-sm text-gray-400">
-                <div className="flex justify-between bg-white/5 px-3 py-2 rounded">
-                    <span>Undo</span>
-                    <kbd className="bg-black/40 px-1.5 rounded text-white font-mono text-xs">Cmd+Z</kbd>
-                </div>
-                <div className="flex justify-between bg-white/5 px-3 py-2 rounded">
-                    <span>Redo</span>
-                    <kbd className="bg-black/40 px-1.5 rounded text-white font-mono text-xs">Cmd+Shift+Z</kbd>
-                </div>
-             </div>
-           </section>
-
+            <div className="bg-gradient-to-r from-pink-500/10 to-rose-500/10 rounded-lg p-4 border border-pink-500/20">
+                <p className="text-sm text-gray-300 mb-3">
+                    If you find Markflow useful, consider supporting its development. Your support helps keep the project alive!
+                </p>
+                <a 
+                    href="https://buymeacoffee.com/markflow" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-[#FFDD00] text-black px-4 py-2 rounded-lg font-semibold text-sm hover:bg-[#FFDD00]/90 transition-colors"
+                >
+                   <img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee" className="w-4 h-4" />
+                   Buy me a coffee
+                </a>
+            </div>
+          </section>
         </div>
         
         {/* Footer */}

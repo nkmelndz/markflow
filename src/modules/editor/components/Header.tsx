@@ -82,7 +82,7 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
       <div className="flex items-center gap-6">
         <h1 className="text-2xl font-bold text-white tracking-tight">markflow</h1>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
             {/* Layout Toggles */}
             <div className="bg-[#121212] p-1 rounded-lg flex items-center gap-1">
             <button
@@ -150,10 +150,10 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
 
             <button
                 onClick={() => setIsHelpOpen(true)}
-                className="text-gray-400 hover:text-white p-2 hover:bg-white/5 rounded-lg transition-colors"
+                className="text-gray-400 hover:text-white p-1.5 hover:bg-white/5 rounded-lg transition-colors"
                 title="Help & Guide"
             >
-                <CircleHelp size={20} />
+                <CircleHelp size={22} />
             </button>
         </div>
       </div>
