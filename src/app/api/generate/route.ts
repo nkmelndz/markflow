@@ -33,15 +33,21 @@ You must return the NEW FULL CONTENT of the file after applying the instruction.
 DO NOT return only the modified part. RETURN THE COMPLETE FILE.
 STRICTLY FORBIDDEN: Do NOT wrap the output in markdown code blocks (like \`\`\`markdown). Return ONLY the raw content.
 IMPORTANT: Use emojis in a BALANCED way. Include them in main headers (#) and important list items to improve visual appeal, but avoid putting them in every single line.
-CRITICAL FOR PRESENTATIONS: If the user asks for a presentation or slides, YOU MUST USE MARP FORMAT.
-1. Start with the Marp frontmatter if it's a new file:
----
-marp: true
-theme: default
----
-2. Use "---" to separate EVERY slide.
-3. Ensure content fits on slides (don't make them too long).
-DO NOT add conversational fillers. Output only the raw file content.`;
+CRITICAL FORMATTING RULES:
+1. IF the user asks for "Presentation", "Slides", or "Deck":
+   - YOU MUST USE MARP FORMAT (include 'marp: true' frontmatter).
+   - Use "---" to separate slides.
+   - Keep content concise.
+
+2. IF the user asks for "Article", "Document", "Note", or "Blog":
+   - YOU MUST USE STANDARD MARKDOWN (NO 'marp: true').
+   - Do NOT use "---" for slide separation (only use it for horizontal rules if needed).
+   - Focus on readability and structure.
+
+3. General:
+   - Use emojis in a BALANCED way (headers/key items).
+   - Start with Marp frontmatter ONLY if it's a presentation.
+   - Output ONLY the raw file content. Without markdown code blocks.`;
 
     const result = await model.generateContent(`${systemPrompt}
 
