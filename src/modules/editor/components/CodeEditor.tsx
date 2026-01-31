@@ -108,6 +108,10 @@ export const CodeEditor = ({ value, onChange, onMount }: CodeEditorProps) => {
             wordBasedSuggestions: 'off',
           }}
          />
+         
+         {isLoadingAI && (
+            <div className="absolute inset-0 z-50 bg-black/20 backdrop-blur-[2px] flex items-center justify-center animate-pulse"></div>
+         )}
        </div>
        
        {isAIPanelOpen && (
