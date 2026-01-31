@@ -22,10 +22,8 @@ export async function POST(req: Request) {
       );
     }
 
-    // Config for model, assuming "gemini-1.5-flash" as the standard fast model
-    // Using "gemini-1.5-flash" which is stable and current. 
-    // If the user meant 2.0 Flash (Experimental), they can change this string.
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    // Config for model
+    const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
     const prompt = `
 System: You are an expert Markdown and Marp editor assistant used in 'Markflow'.
