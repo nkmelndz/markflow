@@ -11,7 +11,7 @@ interface CodeEditorProps {
 }
 
 export const CodeEditor = ({ value, onChange, onMount }: CodeEditorProps) => {
-  const [isAIPanelOpen, setIsAIPanelOpen] = React.useState(false);
+  const [isAIPanelOpen, setIsAIPanelOpen] = React.useState(true);
   const [isLoadingAI, setIsLoadingAI] = React.useState(false);
   const editorRef = React.useRef<any>(null);
   const { checkLimit, incrementUsage, remaining } = useRateLimit();
