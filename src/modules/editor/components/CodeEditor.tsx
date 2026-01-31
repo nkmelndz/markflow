@@ -29,10 +29,8 @@ export const CodeEditor = ({ value, onChange, onMount }: CodeEditorProps) => {
     setIsLoadingAI(true);
     
     try {
-        const selection = editor.getSelection();
         const model = editor.getModel();
         const fullContent = model.getValue();
-        const selectedText = model.getValueInRange(selection);
         
         // Prepare context: if selection exists, focus on it, otherwise use full content
         // But for the API, we decided to send full content as context to give LLM awareness, 
@@ -59,18 +57,18 @@ export const CodeEditor = ({ value, onChange, onMount }: CodeEditorProps) => {
         const generatedText = data.generatedText;
 
         if (generatedText) {
-             // Logic: If text was selected, replace it. 
-             // If cursor was placed (empty selection), insert there.
-             // If the instruction implies replacing the whole file, the user probably selected all or meant it.
-             // For now, standard behavior: Replace selection or insert at cursor.
+             // Logic: Full File Replacement Strategy
+             // To avoid duplication or misplaced insertions, we replace the entire model content.
+             const fullRange = model.getFullModelRange();
             
-            editor.executeEdits('ai-generate', [{
-                range: selection,
+             editor.executeEdits('ai-generate', [{
+                range: fullRange,
                 text: generatedText,
                 forceMoveMarkers: true
             }]);
             
-             // Optional: Format document after insertion if needed? nah.
+            // pushUndoStop() is often automatic with executeEdits in recent monaco versions, 
+            // but ensuring it's treated as a single undoable action is good.
         }
 
     } catch (err) {

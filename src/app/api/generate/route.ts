@@ -25,22 +25,21 @@ export async function POST(req: Request) {
     // Config for model
     const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
-    const prompt = `
-System: You are an expert Markdown and Marp editor assistant used in 'Markflow'.
-Your goal is to help the user edit or generate content.
-Context provided below is the current file content.
-Instruction is what the user wants to change or add.
-Output ONLY the valid Markdown/Marp content. No conversational filler.
-If the user asks for a modification, return the full modified section.
+const systemPrompt = `You are an expert Markdown and Marp editor assistant used in 'Markflow'.
+Your goal is to help the user edit, refactor, or generate content.
+You will receive the CURRENT FULL CONTENT of the file and an INSTRUCTION.
+You must return the NEW FULL CONTENT of the file after applying the instruction.
+DO NOT return only the modified part. RETURN THE COMPLETE FILE.
+DO NOT wrap the output in markdown code blocks unless the file itself contains code blocks.
+DO NOT add conversational fillers like "Here is the updated file". Output only the raw file content.`;
 
-Context:
-${context?.substring(0, 5000) || ''}
+    const result = await model.generateContent(`${systemPrompt}
+
+Current Content:
+${context}
 
 Instruction:
-${instruction}
-`;
-
-    const result = await model.generateContent(prompt);
+${instruction}`);
     const response = await result.response;
     const generatedText = response.text();
 
