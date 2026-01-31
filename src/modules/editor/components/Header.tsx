@@ -82,7 +82,7 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
       <div className="flex items-center gap-6">
         <h1 className="text-2xl font-bold text-white tracking-tight">markflow</h1>
         
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
             {/* Layout Toggles */}
             <div className="bg-[#121212] p-1 rounded-lg flex items-center gap-1">
             <button
@@ -145,6 +145,16 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
                 <Presentation size={16} />
             </button>
             </div>
+
+            <div className="w-px h-6 bg-white/10" />
+
+            <button
+                onClick={() => setIsHelpOpen(true)}
+                className="text-gray-400 hover:text-white p-2 hover:bg-white/5 rounded-lg transition-colors"
+                title="Help & Guide"
+            >
+                <CircleHelp size={20} />
+            </button>
         </div>
       </div>
 
@@ -173,7 +183,7 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
         )}
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <input 
             type="file" 
             ref={fileInputRef}
@@ -227,16 +237,6 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
           )}
         </div>
         
-        <div className="w-px h-6 bg-white/10 mx-1" />
-
-        <button
-            onClick={() => setIsHelpOpen(true)}
-            className="text-gray-400 hover:text-white p-2 hover:bg-white/5 rounded-lg transition-colors"
-            title="Help & Guide"
-        >
-            <CircleHelp size={20} />
-        </button>
-
         {isHelpOpen && <HelpModal onClose={() => setIsHelpOpen(false)} />}
       </div>
     </header>
