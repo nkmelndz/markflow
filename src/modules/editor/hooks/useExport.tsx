@@ -147,8 +147,8 @@ export const useExport = () => {
     downloadBlob(blob, filename);
   }, []);
 
-  const triggerPrint = useCallback((content: string, viewMode: 'marp' | 'markdown') => {
-    const htmlContent = generateFullHTML(content, viewMode, 'Print');
+  const triggerPrint = useCallback((content: string, viewMode: 'marp' | 'markdown', filename: string = 'Document') => {
+    const htmlContent = generateFullHTML(content, viewMode, filename);
     
     const iframe = document.createElement('iframe');
     iframe.style.position = 'fixed';
