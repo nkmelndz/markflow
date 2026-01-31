@@ -1,60 +1,86 @@
-export const DEFAULT_CONTENT = `# 📘 Markdown Basic Guide
+export const DEFAULT_CONTENT = `# 🌟 **Markflow**
 
-## 📝 Introduction
-Markdown is a lightweight markup language that allows you to write formatted text easily and quickly.  
-It is widely used in:
-- Technical documentation
-- Blogs
-- GitHub
-- Presentations (Marp)
-- Online editors
+### Markdown & Marp Editing Powerhouse
+
+> ✨ A smart web editor for writing **Markdown** and **Marp presentations** with AI assistance.
 
 ---
 
-## ✨ Main Features
+## 🚀 Features
 
-### ✅ Text Formatting
-You can write text using:
-- **Bold**
-- *Italic*
-- ~~Strikethrough~~
-- \`Inline code\`
+* ✍️ **Markdown & Marp support**
+* 🤖 **AI-powered editing & generation**
+* 🎨 **Automatic formatting**
+* 😊 **Balanced emoji usage**
 
----
-
-## 📋 Task List
-- [x] Learn Markdown
-- [x] Create a \`.md\` file
-- [ ] Publish documentation
-- [ ] Create presentations with Marp
+| Mode     | Use case       | Slides |
+| -------- | -------------- | ------ |
+| Markdown | Docs, articles | ❌      |
+| Marp     | Presentations  | ✅      |
 
 ---
 
-## 🔗 Links and Images
+## 🏢 Markdown Mode
 
-Link to Google:  
-[Visit Google](https://www.google.com)
+* Clean document structure
+* No slide separators (\`---\`)
+* Supports lists, tables, code blocks
 
-Sample image:  
-![Markdown Logo](https://upload.wikimedia.org/wikipedia/commons/4/48/Markdown-mark.svg)
-
----
-
-## 💬 Quote
-> “Markdown turns plain text into beautifully formatted documents.”  
-> — Unknown author
-
----
-
-## 💻 Code Block
-
-JavaScript example:
-
-\`\`\`javascript
-function greet(name) {
-  console.log("Hello " + name);
-}
-
-greet("Nikolás");
+\`\`\`md
+## Example
+- Item 1
+- Item 2
 \`\`\`
+
+---
+
+## 🎤 Marp Mode
+
+\`\`\`yaml
+---
+marp: true
+---
+\`\`\`
+
+* Slides separated with \`---\`
+* Visual and concise content
+
+---
+
+## ⚙️ How It Works
+
+1. Provide **full content**
+2. Give an **instruction**
+3. Markflow returns the **updated file**
+
+---
+
+## ✅ Benefits
+
+* ⚡ Faster writing
+* 🎯 Consistent output
+* 👥 Easy collaboration
+
+---
+
+## 📌 Notes
+
+> **Tip:** Always send the full file when requesting changes.
+
+---
+
+## 🎉 Conclusion
+
+**Markflow** helps you write better Markdown and create beautiful Marp slides — faster and easier.
+
+👉 *Create. Present. Flow.* ✨
+
+---
+
+If you want, I can:
+
+* convert this into **Marp slides**
+* optimize it for a **README**
+* or tailor it to your editor’s current features 👌
+
 `;
