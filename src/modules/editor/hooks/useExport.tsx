@@ -71,9 +71,26 @@ export const useExport = () => {
       line-height: 1.6;
       max-width: 800px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 3rem;
       color: black;
       background: white;
+    }
+    
+    @media print {
+        body {
+            max-width: none;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        @page {
+            margin: 1.5cm; /* Standard readable margin */
+        }
+        /* Remove extra spacing ONLY from the first element */
+        .wmde-markdown > *:first-child {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
     }
     
     /* MDEditor Styles Replication for Print/Export */
@@ -87,6 +104,8 @@ export const useExport = () => {
         border-bottom: 1px solid #d0d7de;
         padding-bottom: .3em;
         color: #24292f;
+        /* Ensure normal headers still have some space, but not excessive */
+        margin-top: 1.5rem; 
     }
 
     .wmde-markdown pre { background: #f6f8fa !important; padding: 16px; border-radius: 6px; overflow: auto; }
