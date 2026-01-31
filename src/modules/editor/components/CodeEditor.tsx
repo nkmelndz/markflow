@@ -2,6 +2,7 @@ import React from 'react';
 import Editor from '@monaco-editor/react';
 import { EditorToolbar } from './EditorToolbar';
 import { AIPanel } from './AIPanel';
+import { useRateLimit } from '../hooks/useRateLimit';
 
 interface CodeEditorProps {
   value: string;
@@ -13,6 +14,7 @@ export const CodeEditor = ({ value, onChange, onMount }: CodeEditorProps) => {
   const [isAIPanelOpen, setIsAIPanelOpen] = React.useState(false);
   const [isLoadingAI, setIsLoadingAI] = React.useState(false);
   const editorRef = React.useRef<any>(null);
+  const { checkLimit, incrementUsage, remaining } = useRateLimit();
 
   const handleEditorDidMount = (editor: any, monaco: any) => {
     editorRef.current = editor;
@@ -26,18 +28,17 @@ export const CodeEditor = ({ value, onChange, onMount }: CodeEditorProps) => {
     const editor = editorRef.current;
     if (!editor || isLoadingAI) return;
 
+    if (!checkLimit()) {
+        alert('Daily limit reached (15 queries). Please try again tomorrow.');
+        return;
+    }
+
     setIsLoadingAI(true);
     
     try {
         const model = editor.getModel();
         const fullContent = model.getValue();
-        
-        // Prepare context: if selection exists, focus on it, otherwise use full content
-        // But for the API, we decided to send full content as context to give LLM awareness, 
-        // and let it know what to do via instruction.
-        // However, to make the *result* application easier, checking selection is useful.
-        
-        const context = fullContent; // Sending full content is safer for "awareness"
+        const context = fullContent;
         
         const response = await fetch('/api/generate', {
             method: 'POST',
@@ -49,7 +50,6 @@ export const CodeEditor = ({ value, onChange, onMount }: CodeEditorProps) => {
 
         if (data.error) {
             console.error('AI Error:', data.error);
-            // Optionally show toast/alert
             alert(`AI Error: ${data.error}`);
             return;
         }
@@ -57,18 +57,15 @@ export const CodeEditor = ({ value, onChange, onMount }: CodeEditorProps) => {
         const generatedText = data.generatedText;
 
         if (generatedText) {
-             // Logic: Full File Replacement Strategy
-             // To avoid duplication or misplaced insertions, we replace the entire model content.
              const fullRange = model.getFullModelRange();
-            
              editor.executeEdits('ai-generate', [{
                 range: fullRange,
                 text: generatedText,
                 forceMoveMarkers: true
             }]);
             
-            // pushUndoStop() is often automatic with executeEdits in recent monaco versions, 
-            // but ensuring it's treated as a single undoable action is good.
+            // Increment usage only on success
+            incrementUsage();
         }
 
     } catch (err) {
