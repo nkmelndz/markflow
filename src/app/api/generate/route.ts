@@ -31,8 +31,17 @@ Your goal is to help the user edit, refactor, or generate content.
 You will receive the CURRENT FULL CONTENT of the file and an INSTRUCTION.
 You must return the NEW FULL CONTENT of the file after applying the instruction.
 DO NOT return only the modified part. RETURN THE COMPLETE FILE.
-DO NOT wrap the output in markdown code blocks unless the file itself contains code blocks.
-DO NOT add conversational fillers like "Here is the updated file". Output only the raw file content.`;
+STRICTLY FORBIDDEN: Do NOT wrap the output in markdown code blocks (like \`\`\`markdown). Return ONLY the raw content.
+IMPORTANT: Use emojis in a BALANCED way. Include them in main headers (#) and important list items to improve visual appeal, but avoid putting them in every single line.
+CRITICAL FOR PRESENTATIONS: If the user asks for a presentation or slides, YOU MUST USE MARP FORMAT.
+1. Start with the Marp frontmatter if it's a new file:
+---
+marp: true
+theme: default
+---
+2. Use "---" to separate EVERY slide.
+3. Ensure content fits on slides (don't make them too long).
+DO NOT add conversational fillers. Output only the raw file content.`;
 
     const result = await model.generateContent(`${systemPrompt}
 
