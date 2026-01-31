@@ -1,6 +1,7 @@
 import React from 'react';
-import { Download, Upload, PenLine, Columns, Eye, FileText, Presentation, FileCode, Printer } from 'lucide-react';
+import { Download, Upload, PenLine, Columns, Eye, FileText, Presentation, FileCode, Printer, CircleHelp } from 'lucide-react';
 import { useExport } from '../hooks/useExport';
+import { HelpModal } from './HelpModal';
 
 interface EditorHeaderProps {
   viewMode: 'marp' | 'markdown';
@@ -15,6 +16,7 @@ interface EditorHeaderProps {
 
 export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode, content, fileName, setFileName, setContent }: EditorHeaderProps) => {
   const [isExportOpen, setIsExportOpen] = React.useState(false);
+  const [isHelpOpen, setIsHelpOpen] = React.useState(false);
   const [isEditingName, setIsEditingName] = React.useState(false);
   const exportMenuRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -224,6 +226,18 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
             </div>
           )}
         </div>
+        
+        <div className="w-px h-6 bg-white/10 mx-1" />
+
+        <button
+            onClick={() => setIsHelpOpen(true)}
+            className="text-gray-400 hover:text-white p-2 hover:bg-white/5 rounded-lg transition-colors"
+            title="Help & Guide"
+        >
+            <CircleHelp size={20} />
+        </button>
+
+        {isHelpOpen && <HelpModal onClose={() => setIsHelpOpen(false)} />}
       </div>
     </header>
   );
