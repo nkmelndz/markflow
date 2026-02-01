@@ -21,11 +21,12 @@ export const useExport = () => {
     downloadBlob(blob, filename);
   }, []);
 
-  const generateFullHTML = (content: string, viewMode: 'marp' | 'markdown', filename: string) => {
+    const generateFullHTML = (content: string, viewMode: 'marp' | 'markdown', filename: string) => {
     let htmlContent = '';
 
     if (viewMode === 'marp') {
-      const marp = new Marp({ html: true });
+      // Disable container to ensure direct SVG children
+      const marp = new Marp({ html: true, container: false });
       const { html, css } = marp.render(content);
       htmlContent = `
 <!DOCTYPE html>
@@ -35,17 +36,116 @@ export const useExport = () => {
   <title>${filename}</title>
   <style>
     ${css}
-    body { margin: 0; background: white; }
-    .marp-content { box-shadow: none; margin: 0 auto; break-after: page; }
+    body { margin: 0; background: #fff; overflow: hidden; }
+    #slide-container { 
+        width: 100vw; 
+        height: 100vh; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        background: white;
+    }
+    #slide-container > svg { 
+        display: none !important;
+        width: 100% !important; 
+        height: 100% !important; 
+        object-fit: contain; 
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        margin: auto;
+    }
+    #slide-container > svg.active { display: block !important; }
+    
+    /* Controls UI */
+    #marp-controls {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        gap: 8px;
+        background: rgba(0,0,0,0.6);
+        padding: 8px;
+        border-radius: 8px;
+        opacity: 0;
+        transition: opacity 0.2s;
+        z-index: 9999;
+    }
+    body:hover #marp-controls { opacity: 1; }
+    #marp-controls button {
+        background: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        padding: 4px 8px;
+        font-size: 16px;
+        opacity: 0.8;
+    }
+    #marp-controls button:hover { opacity: 1; }
+    #marp-controls span {
+        color: white;
+        font-family: sans-serif;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        min-width: 60px;
+        justify-content: center;
+    }
+    
     @media print {
-        @page { size: landscape; margin: 0; }
-        .marp-content { break-after: page; page-break-after: always; }
+        body { overflow: auto; }
+        #slide-container { display: block; height: auto; }
+        #slide-container > svg { display: block !important; page-break-after: always; break-after: page; height: auto !important; width: 100% !important; }
+        #marp-controls { display: none; }
     }
   </style>
 </head>
 <body>
-  ${html}
-</body>
+  <div id="slide-container">
+    ${html}
+  </div>
+  <div id="marp-controls">
+      <button onclick="prevSlide()" title="Previous (Left Arrow)">❮</button>
+      <span id="slide-counter">1 / 1</span>
+      <button onclick="nextSlide()" title="Next (Right Arrow, Space)">❯</button>
+      <button onclick="toggleFullscreen()" title="Toggle Fullscreen (F)">⛶</button>
+  </div>
+  <script>
+    const slides = document.querySelectorAll('#slide-container > svg');
+    const counter = document.getElementById('slide-counter');
+    let currentIndex = 0;
+
+    function showSlide(index) {
+        if (index >= 0 && index < slides.length) {
+            slides[currentIndex].classList.remove('active');
+            currentIndex = index;
+            slides[currentIndex].classList.add('active');
+            counter.innerText = (currentIndex + 1) + ' / ' + slides.length;
+        }
+    }
+
+    function nextSlide() { showSlide(currentIndex + 1); }
+    function prevSlide() { showSlide(currentIndex - 1); }
+
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            if (document.exitFullscreen) document.exitFullscreen();
+        }
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+        if (e.key === 'f') toggleFullscreen();
+    });
+
+    // Initialize
+    if (slides.length > 0) {
+        slides[0].classList.add('active');
+        counter.innerText = '1 / ' + slides.length;
+    }
+  </script>
 </html>`;
     } else {
       // Use renderToStaticMarkup to convert the React component to HTML string
@@ -71,9 +171,26 @@ export const useExport = () => {
       line-height: 1.6;
       max-width: 800px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 3rem;
       color: black;
       background: white;
+    }
+    
+    @media print {
+        body {
+            max-width: none;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        @page {
+            margin: 1.5cm; /* Standard readable margin */
+        }
+        /* Remove extra spacing ONLY from the first element */
+        .wmde-markdown > *:first-child {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
     }
     
     /* MDEditor Styles Replication for Print/Export */
@@ -87,6 +204,8 @@ export const useExport = () => {
         border-bottom: 1px solid #d0d7de;
         padding-bottom: .3em;
         color: #24292f;
+        /* Ensure normal headers still have some space, but not excessive */
+        margin-top: 1.5rem; 
     }
 
     .wmde-markdown pre { background: #f6f8fa !important; padding: 16px; border-radius: 6px; overflow: auto; }
@@ -147,8 +266,8 @@ export const useExport = () => {
     downloadBlob(blob, filename);
   }, []);
 
-  const triggerPrint = useCallback((content: string, viewMode: 'marp' | 'markdown') => {
-    const htmlContent = generateFullHTML(content, viewMode, 'Print');
+  const triggerPrint = useCallback((content: string, viewMode: 'marp' | 'markdown', filename: string = 'Document') => {
+    const htmlContent = generateFullHTML(content, viewMode, filename);
     
     const iframe = document.createElement('iframe');
     iframe.style.position = 'fixed';

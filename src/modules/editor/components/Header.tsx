@@ -1,6 +1,7 @@
 import React from 'react';
-import { Download, Upload, PenLine, Columns, Eye, FileText, Presentation, FileCode, Printer } from 'lucide-react';
+import { Download, Upload, PenLine, Columns, Eye, FileText, Presentation, FileCode, Printer, CircleHelp } from 'lucide-react';
 import { useExport } from '../hooks/useExport';
+import { HelpModal } from './HelpModal';
 
 interface EditorHeaderProps {
   viewMode: 'marp' | 'markdown';
@@ -15,6 +16,7 @@ interface EditorHeaderProps {
 
 export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode, content, fileName, setFileName, setContent }: EditorHeaderProps) => {
   const [isExportOpen, setIsExportOpen] = React.useState(false);
+  const [isHelpOpen, setIsHelpOpen] = React.useState(false);
   const [isEditingName, setIsEditingName] = React.useState(false);
   const exportMenuRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -47,7 +49,7 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
     } else if (type === 'html') {
       exportHTML(content, viewMode, `${safeFileName}.html`);
     } else if (type === 'pdf') {
-      triggerPrint(content, viewMode);
+      triggerPrint(content, viewMode, safeFileName);
     }
     setIsExportOpen(false);
   };
@@ -143,6 +145,16 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
                 <Presentation size={16} />
             </button>
             </div>
+
+            <div className="w-px h-6 bg-white/10" />
+
+            <button
+                onClick={() => setIsHelpOpen(true)}
+                className="text-gray-400 hover:text-white p-1.5 hover:bg-white/5 rounded-lg transition-colors"
+                title="Help & Guide"
+            >
+                <CircleHelp size={22} />
+            </button>
         </div>
       </div>
 
@@ -171,7 +183,7 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
         )}
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <input 
             type="file" 
             ref={fileInputRef}
@@ -224,6 +236,8 @@ export const EditorHeader = ({ viewMode, setViewMode, layoutMode, setLayoutMode,
             </div>
           )}
         </div>
+        
+        {isHelpOpen && <HelpModal onClose={() => setIsHelpOpen(false)} />}
       </div>
     </header>
   );

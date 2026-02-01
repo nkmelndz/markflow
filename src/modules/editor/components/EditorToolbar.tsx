@@ -3,14 +3,15 @@ import {
   Bold, Italic, Strikethrough, Heading, 
   List, ListOrdered, CheckSquare, 
   Link, Image, Code, Quote, 
-  Undo, Redo, Minus 
+  Undo, Redo, Minus, Sparkles
 } from 'lucide-react';
 
 interface EditorToolbarProps {
   editorRef: React.MutableRefObject<any>;
+  onToggleAI?: () => void;
 }
 
-export const EditorToolbar = ({ editorRef }: EditorToolbarProps) => {
+export const EditorToolbar = ({ editorRef, onToggleAI }: EditorToolbarProps) => {
   const insertText = (before: string, after: string = '') => {
     const editor = editorRef.current;
     if (!editor) return;
@@ -140,11 +141,19 @@ export const EditorToolbar = ({ editorRef }: EditorToolbarProps) => {
         <ToolbarButton onClick={() => insertLineStart('> ')} icon={<Quote size={14} />} title="Blockquote" />
       </div>
 
-      {/* Insert */}
       <div className="flex items-center gap-0.5">
         <ToolbarButton onClick={() => insertBlock('link')} icon={<Link size={14} />} title="Link" />
         <ToolbarButton onClick={() => insertBlock('image')} icon={<Image size={14} />} title="Image" />
         <ToolbarButton onClick={() => insertBlock('rule')} icon={<Minus size={14} />} title="Horizontal Rule" />
+      </div>
+
+       {/* AI */}
+       <div className="flex items-center gap-0.5 pl-2 border-l border-white/10 ml-2">
+        <ToolbarButton 
+            onClick={() => onToggleAI?.()} 
+            icon={<Sparkles size={14} className="text-blue-400" />} 
+            title="Ask AI" 
+        />
       </div>
     </div>
   );
