@@ -1,4 +1,4 @@
-export const DEFAULT_CONTENT = `# 🌟 **Markflow**
+export const DEFAULT_CONTENT = `# 🌟 Markflow
 
 ### Markdown & Marp Editing Powerhouse
 
