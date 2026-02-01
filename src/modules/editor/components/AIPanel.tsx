@@ -13,12 +13,37 @@ export const AIPanel = ({ isVisible, onClose, onSend, isLoading = false }: AIPan
   const [input, setInput] = useState('');
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
+  const [loadingMessage, setLoadingMessage] = useState("✨ Generating content... Please wait.");
+  
+  const LOADING_MESSAGES = [
+    "✨ Generating content... Please wait.",
+    "🤖 Thinking about the best approach...",
+    "📝 Writing your code...",
+    "🎨 Polishing the details...",
+    "👀 Reviewing the output...",
+    "🚀 Almost ready..."
+  ];
+
+  // Cycle loading messages
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isLoading) {
+        let index = 0;
+        setLoadingMessage(LOADING_MESSAGES[0]); // Reset on start
+        interval = setInterval(() => {
+            index = (index + 1) % LOADING_MESSAGES.length;
+            setLoadingMessage(LOADING_MESSAGES[index]);
+        }, 5000); // Change every 3 seconds
+    }
+    return () => clearInterval(interval);
+  }, [isLoading]);
+
   // Auto-focus when opened
   useEffect(() => {
-    if (isVisible && inputRef.current) {
+    if (isVisible && !isLoading && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [isVisible]);
+  }, [isVisible, isLoading]);
 
   // Handle enter key to send
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -32,7 +57,7 @@ export const AIPanel = ({ isVisible, onClose, onSend, isLoading = false }: AIPan
   };
 
   const handleSend = () => {
-    if (!input.trim() || isLoading) return;
+    if (!input.trim() || input.length < 5 || isLoading) return;
     onSend(input);
     setInput('');
   };
@@ -65,13 +90,19 @@ export const AIPanel = ({ isVisible, onClose, onSend, isLoading = false }: AIPan
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Ask AI to edit or generate content (e.g., 'Add a table of contents')..."
-          className="w-full bg-transparent text-sm text-white p-3 pr-10 resize-none outline-none h-[80px] placeholder:text-gray-500 font-sans"
+          disabled={isLoading}
+          maxLength={300}
+          placeholder={isLoading ? loadingMessage : "Ask AI to edit or generate content (e.g., 'Add a table of contents')..."}
+          className="w-full bg-transparent text-sm text-white p-3 pr-10 pb-8 resize-none outline-none h-[100px] placeholder:text-gray-500 font-sans disabled:opacity-50 disabled:cursor-not-allowed"
         />
         
+        <div className="absolute bottom-3 left-3 text-xs text-gray-500 font-mono">
+            {input.length}/300
+        </div>
+
         <button
           onClick={handleSend}
-          disabled={!input.trim() || isLoading}
+          disabled={!input.trim() || input.length < 5 || isLoading}
           className="absolute bottom-2 right-2 p-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isLoading ? (
