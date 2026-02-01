@@ -116,7 +116,7 @@ export const HelpModal = ({ onClose }: HelpModalProps) => {
                     If you find Markflow useful, consider supporting its development. Your support helps keep the project alive!
                 </p>
                 <a 
-                    href="https://buymeacoffee.com/markflow" 
+                    href="https://buymeacoffee.com/nkmelndz" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 bg-[#FFDD00] text-black px-4 py-2 rounded-lg font-semibold text-sm hover:bg-[#FFDD00]/90 transition-colors"
