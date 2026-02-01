@@ -131,7 +131,7 @@ export const HelpModal = ({ onClose }: HelpModalProps) => {
         {/* Footer */}
         <div className="p-4 border-t border-white/10 bg-[#121212] text-center">
             <p className="text-xs text-gray-500">
-                Markflow v1.0 • Powered by Gemini AI
+                © 2026 Markflow. All rights reserved.
             </p>
         </div>
       </div>
