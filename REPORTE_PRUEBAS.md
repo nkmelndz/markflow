@@ -70,10 +70,67 @@ npm run test -- src/modules/editor/hooks/rateLimitUtils.test.ts src/app/api/gene
 
 ---
 
+## Pruebas manuales por caso de uso
+
+### Caso de uso 1: Generación asistida por IA (`POST /api/generate`)
+
+#### Ejecución manual
+
+- Entorno: aplicación levantada con `npm run dev` en `http://localhost:3000`
+- Flujo ejecutado:
+  1. Abrir panel de IA.
+  2. Enviar instrucción con contenido cargado.
+  3. Repetir prueba sin `GEMINI_API_KEY` en `.env.local`.
+
+#### Reporte manual de prueba unitaria
+
+- Validación manual de entrada (`instruction`):
+  - Entrada válida con texto útil: **Aprobada**
+  - Entrada vacía/espacios: **Aprobada** (se rechaza)
+- Resultado unitario manual del caso: **Aprobadas (2/2)**
+
+#### Reporte manual de prueba de integración
+
+- Flujo API/UI completo con instrucción y contexto: **Aprobada**
+- Flujo controlado sin `GEMINI_API_KEY` con mensaje esperado: **Aprobada**
+- Resultado integración manual del caso: **Aprobadas (2/2)**
+- Resultado total manual del caso: **Aprobadas (4/4)**
+
+---
+
+### Caso de uso 2: Control de límite diario de solicitudes IA
+
+#### Ejecución manual
+
+- Entorno: aplicación levantada con `npm run dev` en `http://localhost:3000`
+- Flujo ejecutado:
+  1. Realizar solicitudes IA consecutivas.
+  2. Verificar decremento del contador por solicitud.
+  3. Alcanzar límite y comprobar bloqueo.
+  4. Simular cambio de día con `localStorage` (`markflow_ai_usage`) y validar reinicio.
+
+#### Reporte manual de prueba unitaria
+
+- Validación visual del contador por operación individual: **Aprobada**
+- Validación manual de estado al llegar al límite diario: **Aprobada**
+- Resultado unitario manual del caso: **Aprobadas (2/2)**
+
+#### Reporte manual de prueba de integración
+
+- Flujo completo de consumo hasta bloqueo: **Aprobada**
+- Flujo de reinicio por cambio de día y nuevo permiso de uso: **Aprobada**
+- Resultado integración manual del caso: **Aprobadas (2/2)**
+- Resultado total manual del caso: **Aprobadas (4/4)**
+
+---
+
 ## Resumen consolidado
 
-- Casos de uso validados: **2**
-- Total de pruebas ejecutadas: **6**
-- Pruebas aprobadas: **6**
+- Casos de uso validados (automáticas): **2**
+- Total de pruebas automáticas ejecutadas: **6**
+- Pruebas automáticas aprobadas: **6**
+- Casos de uso validados (manuales): **2**
+- Total de verificaciones manuales ejecutadas: **8**
+- Verificaciones manuales aprobadas: **8**
 - Pruebas fallidas: **0**
 - Estado final: **Exitoso**
