@@ -4,11 +4,14 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 // Initialize Gemini client
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
+export const hasValidInstruction = (instruction: unknown): instruction is string =>
+  typeof instruction === 'string' && instruction.trim().length > 0;
+
 export async function POST(req: Request) {
   try {
     const { instruction, context } = await req.json();
 
-    if (!instruction) {
+    if (!hasValidInstruction(instruction)) {
       return NextResponse.json(
         { error: 'Instruction is required' },
         { status: 400 }
