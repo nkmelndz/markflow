@@ -26,26 +26,30 @@ describe('Caso de uso: generación asistida por IA', () => {
 
     it('retorna mensaje controlado cuando no existe GEMINI_API_KEY', async () => {
       const previousKey = process.env.GEMINI_API_KEY;
-      delete process.env.GEMINI_API_KEY;
+      try {
+        delete process.env.GEMINI_API_KEY;
 
-      const request = new Request('http://localhost/api/generate', {
-        method: 'POST',
-        body: JSON.stringify({
-          instruction: 'Mejora este texto',
-          context: '# Nota',
-        }),
-      });
+        const request = new Request('http://localhost/api/generate', {
+          method: 'POST',
+          body: JSON.stringify({
+            instruction: 'Mejora este texto',
+            context: '# Nota',
+          }),
+        });
 
-      const response = await POST(request);
-      const data = await response.json();
+        const response = await POST(request);
+        const data = await response.json();
 
-      expect(response.status).toBe(200);
-      expect(data).toEqual({
-        generatedText: 'Error: GEMINI_API_KEY is not configured in .env.local',
-      });
-
-      if (previousKey) {
-        process.env.GEMINI_API_KEY = previousKey;
+        expect(response.status).toBe(200);
+        expect(data).toEqual({
+          generatedText: 'Error: GEMINI_API_KEY is not configured in .env.local',
+        });
+      } finally {
+        if (previousKey) {
+          process.env.GEMINI_API_KEY = previousKey;
+        } else {
+          delete process.env.GEMINI_API_KEY;
+        }
       }
     });
   });
