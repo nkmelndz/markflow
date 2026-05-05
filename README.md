@@ -1,71 +1,93 @@
-# Markflow
+# 📝 Markflow
+
+<p>
+  <img src="https://img.shields.io/badge/Next.js-13-black?logo=nextdotjs" />
+  <img src="https://img.shields.io/badge/React-18-blue?logo=react" />
+  <img src="https://img.shields.io/badge/TailwindCSS-3-38B2AC?logo=tailwindcss" />
+  <img src="https://img.shields.io/badge/License-MIT-green" />
+  <img src="https://img.shields.io/badge/Status-Active-success" />
+</p>
 
 Markflow is a modern web editor for writing Markdown documents and Marp presentations with real-time preview and export options.
 
 ## ✨ Features
 
-- Markdown & Marp authoring
-- Split-view editing and preview
-- Export to Markdown, HTML, and PDF/Print
-- Optional AI-assisted editing (requires a Gemini API key)
+* 📝 **Markdown & Marp authoring**
+* 👀 **Split-view editing with live preview**
+* 📤 **Export to Markdown, HTML, and PDF/Print**
+* 🤖 **Optional AI-assisted editing** (powered by Gemini)
+
 
 ## 🧰 Tech Stack
 
-- Next.js (App Router)
-- React
-- Tailwind CSS
-- Monaco Editor
-- Marp
+| Technology       | Description                      |
+| ---------------- | -------------------------------- |
+| ⚛️ React         | UI library                       |
+| ▲ Next.js        | Fullstack framework (App Router) |
+| 🎨 Tailwind CSS  | Styling                          |
+| 🧠 Monaco Editor | Code editor (VS Code-like)       |
+| 📊 Marp          | Markdown presentations           |
 
 ## 🚀 Getting Started
 
-### Requirements
+### 📋 Requirements
 
-- Node.js 18+
-- npm (or your preferred package manager)
+* Node.js 18+
+* npm (or yarn/pnpm)
 
-### Install
+### 📦 Installation
 
-```bash
+```bash id="k7pgas"
 npm install
 ```
 
-### Configure (Optional)
+### ⚙️ Optional Configuration (AI)
 
-To enable AI features, create a `.env.local` file:
+Create a `.env.local` file:
 
-```bash
+```bash id="y0hnr2"
 GEMINI_API_KEY=your_api_key
 ```
 
-### Run the Dev Server
+### ▶️ Run Development Server
 
-```bash
+```bash id="u5vcqt"
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open 👉 http://localhost:3000
 
-### Build for Production
+### 🏗️ Build for Production
 
-```bash
+```bash id="p1nxg8"
 npm run build
 ```
 
-### Lint
+### 🧹 Lint
 
-```bash
+```bash id="yjkyep"
 npm run lint
 ```
 
 ## 🤝 Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines and the PR process.
+Contributions are welcome!
+
+Please read 👉 `CONTRIBUTING.md` for guidelines and the PR process.
+
 
 ## 🧭 Code of Conduct
 
-This project follows the [Code of Conduct](CODE_OF_CONDUCT.md). Please report unacceptable behavior through the channels listed there.
+This project follows a Code of Conduct.
+See 👉 `CODE_OF_CONDUCT.md`
+
 
 ## 📄 License
 
-Licensed under the [MIT License](LICENSE).
+Licensed under the **MIT License**.
+See 👉 `LICENSE`
+
+
+## ⭐ Support
+
+If you find this project useful, consider giving it a ⭐ on GitHub!
