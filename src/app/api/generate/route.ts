@@ -59,11 +59,6 @@ OUTPUT FORMAT (STRICT):
         return content.startsWith('\n') ? content.slice(1) : content;
       }
 
-      const fencedMatch = text.match(/```(?:markdown)?\s*([\s\S]*?)```/i);
-      if (fencedMatch) {
-        return fencedMatch[1];
-      }
-
       return text;
     };
 
