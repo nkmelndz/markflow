@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
     // Config for model
     // Config for model
-    const model = genAI.getGenerativeModel({ model: "gemma-3-12b-it" });
+    const model = genAI.getGenerativeModel({ model: "gemma-4-31b-it" });
 
 const systemPrompt = `You are an expert Markdown and Marp editor assistant used in 'Markflow'.
 Your goal is to help the user edit, refactor, or generate content.
