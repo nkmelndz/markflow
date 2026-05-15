@@ -49,8 +49,6 @@ CRITICAL FORMATTING RULES:
    - Output ONLY the raw file content. Without markdown code blocks.
 
 OUTPUT FORMAT (STRICT):
-- Place %%OUTPUT_START%% on its own line immediately before the content.
-- Place %%OUTPUT_END%% on its own line immediately after the content.
 - Do NOT include analysis, checklists, explanations, or any text outside those markers.`;
 
     const extractFinalContent = (text: string) => {
