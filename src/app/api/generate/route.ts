@@ -46,7 +46,20 @@ CRITICAL FORMATTING RULES:
 3. General:
    - Use emojis in a BALANCED way (headers/key items).
    - Start with Marp frontmatter ONLY if it's a presentation.
-   - Output ONLY the raw file content. Without markdown code blocks.`;
+   - Output ONLY the raw file content. Without markdown code blocks.
+
+OUTPUT FORMAT (STRICT):
+- Return ONLY the updated file content wrapped between <final> and </final>.
+- Do NOT include analysis, checklists, explanations, or any text outside the tags.`;
+
+    const extractFinalContent = (text: string) => {
+      const tagMatch = text.match(/<final>([\s\S]*?)<\/final>/i);
+      if (tagMatch) {
+        const content = tagMatch[1];
+        return content.startsWith('\n') ? content.slice(1) : content;
+      }
+      return text;
+    };
 
     const result = await model.generateContent(`${systemPrompt}
 
@@ -56,7 +69,7 @@ ${context}
 Instruction:
 ${instruction}`);
     const response = await result.response;
-    const generatedText = response.text();
+    const generatedText = extractFinalContent(response.text());
 
     return NextResponse.json({ generatedText });
   } catch (error: any) {
