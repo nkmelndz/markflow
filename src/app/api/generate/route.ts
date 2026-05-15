@@ -49,14 +49,14 @@ CRITICAL FORMATTING RULES:
    - Output ONLY the raw file content. Without markdown code blocks.
 
 OUTPUT FORMAT (STRICT):
-- Return ONLY the updated file content wrapped between <final> and </final>.
-- Do NOT include analysis, checklists, explanations, or any text outside the tags.`;
+- Place %%OUTPUT_START%% on its own line immediately before the content.
+- Place %%OUTPUT_END%% on its own line immediately after the content.
+- Do NOT include analysis, checklists, explanations, or any text outside those markers.`;
 
     const extractFinalContent = (text: string) => {
-      const tagMatch = text.match(/<final>([\s\S]*?)<\/final>/i);
+      const tagMatch = text.match(/%%OUTPUT_START%%\n?([\s\S]*?)\n?%%OUTPUT_END%%/);
       if (tagMatch) {
-        const content = tagMatch[1];
-        return content.startsWith('\n') ? content.slice(1) : content;
+        return tagMatch[1].trim();
       }
       return text;
     };
