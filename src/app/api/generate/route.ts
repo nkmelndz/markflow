@@ -23,8 +23,7 @@ export async function POST(req: Request) {
     }
 
     // Config for model
-    // Config for model
-    const model = genAI.getGenerativeModel({ model: "gemma-3-12b-it" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite" });
 
 const systemPrompt = `You are an expert Markdown and Marp editor assistant used in 'Markflow'.
 Your goal is to help the user edit, refactor, or generate content.
@@ -47,7 +46,18 @@ CRITICAL FORMATTING RULES:
 3. General:
    - Use emojis in a BALANCED way (headers/key items).
    - Start with Marp frontmatter ONLY if it's a presentation.
-   - Output ONLY the raw file content. Without markdown code blocks.`;
+   - Output ONLY the raw file content. Without markdown code blocks.
+
+OUTPUT FORMAT (STRICT):
+- Do NOT include analysis, checklists, explanations, or any text outside those markers.`;
+
+    const extractFinalContent = (text: string) => {
+      const tagMatch = text.match(/%%OUTPUT_START%%\n?([\s\S]*?)\n?%%OUTPUT_END%%/);
+      if (tagMatch) {
+        return tagMatch[1].trim();
+      }
+      return text;
+    };
 
     const result = await model.generateContent(`${systemPrompt}
 
@@ -57,7 +67,7 @@ ${context}
 Instruction:
 ${instruction}`);
     const response = await result.response;
-    const generatedText = response.text();
+    const generatedText = extractFinalContent(response.text());
 
     return NextResponse.json({ generatedText });
   } catch (error: any) {
